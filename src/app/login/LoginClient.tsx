@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Eye, EyeOff, AlertCircle, CheckCircle2 } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
-import { isSupabaseConfigured } from "@/lib/supabase/env";
+import { getSiteOrigin, isSupabaseConfigured } from "@/lib/supabase/env";
 import { createUserProfile } from "@/lib/firestore";
 import { getPostLoginPath } from "@/lib/redirect";
 import { mockSignUp, mockSignIn, mockGoogleSignIn } from "@/lib/mockAuth";
@@ -112,7 +112,7 @@ export function LoginClient() {
       if (useSupabaseAuth) {
         const supabase = createClient();
         const { error: resetError } = await supabase.auth.resetPasswordForEmail(email, {
-          redirectTo: `${window.location.origin}/auth/callback?next=/profile`,
+          redirectTo: `${getSiteOrigin()}/auth/callback?next=/profile`,
         });
         if (resetError) throw resetError;
       } else {
@@ -141,7 +141,7 @@ export function LoginClient() {
             password,
             options: {
               data: { full_name: fullName || email.split("@")[0] },
-              emailRedirectTo: `${window.location.origin}/auth/callback?next=${encodeURIComponent(destination())}`,
+              emailRedirectTo: `${getSiteOrigin()}/auth/callback?next=${encodeURIComponent(destination())}`,
             },
           });
           if (signUpError) throw signUpError;
@@ -191,7 +191,7 @@ export function LoginClient() {
         const { error: oauthError } = await supabase.auth.signInWithOAuth({
           provider: "google",
           options: {
-            redirectTo: `${window.location.origin}/auth/callback?next=${encodeURIComponent(destination())}`,
+            redirectTo: `${getSiteOrigin()}/auth/callback?next=${encodeURIComponent(destination())}`,
           },
         });
         if (oauthError) throw oauthError;
