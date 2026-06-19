@@ -1,26 +1,471 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@import "../../node_modules/tw-animate-css/dist/tw-animate.css";
+@import "../../node_modules/shadcn/dist/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --font-heading: var(--font-playfair);
+  --color-gold: var(--gold);
+  --color-gold-light: var(--gold-light);
+  --color-gold-dark: var(--gold-dark);
+  --color-gold-muted: var(--gold-muted);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/* ────────────────────────────────────────────
+   LIGHT MODE — Clean White + Deep Navy + Rich Gold
+──────────────────────────────────────────── */
+:root {
+  --gold: #B8760A;
+  --gold-light: #D98A0E;
+  --gold-dark: #8E5908;
+  --gold-muted: #D98A0E18;
+  --navy: #1E3A8A;
+  --navy-light: #2557C7;
+  --crimson: #C0392B;
+
+  --background: #F5F5F7;
+  --foreground: #1D1D1F;
+  --card: rgba(255,255,255,0.90);
+  --card-foreground: #1D1D1F;
+  --popover: rgba(255,255,255,0.90);
+  --popover-foreground: #1D1D1F;
+  --primary: #B8760A;
+  --primary-foreground: #ffffff;
+  --secondary: rgba(255,255,255,0.50);
+  --secondary-foreground: #3A3A3C;
+  --muted: rgba(0,0,0,0.05);
+  --muted-foreground: #6E6E73;
+  --accent: rgba(184,118,10,0.10);
+  --accent-foreground: #B8760A;
+  --destructive: oklch(0.577 0.245 27.325);
+  --border: rgba(0,0,0,0.08);
+  --input: rgba(255,255,255,0.60);
+  --ring: #B8760A;
+  --radius: 1rem;
+  --sidebar: rgba(255,255,255,0.70);
+  --sidebar-foreground: #1D1D1F;
+  --sidebar-primary: #B8760A;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: rgba(184,118,10,0.10);
+  --sidebar-accent-foreground: #B8760A;
+  --sidebar-border: rgba(0,0,0,0.08);
+  --sidebar-ring: #B8760A;
+}
+
+/* ────────────────────────────────────────────
+   DARK MODE — Deep Space + Vivid Amber Gold
+──────────────────────────────────────────── */
+.dark {
+  --gold: #FBBF24;
+  --gold-light: #FCD34D;
+  --gold-dark: #F59E0B;
+  --gold-muted: #FBBF2420;
+  --navy: #3B82F6;
+  --navy-light: #60A5FA;
+  --crimson: #F87171;
+
+  --background: #06090F;
+  --foreground: #F5F5F7;
+  --card: rgba(255,255,255,0.06);
+  --card-foreground: #F5F5F7;
+  --popover: rgba(15,22,38,0.92);
+  --popover-foreground: #F5F5F7;
+  --primary: #FBBF24;
+  --primary-foreground: #06090F;
+  --secondary: rgba(255,255,255,0.07);
+  --secondary-foreground: #E2E8F0;
+  --muted: rgba(255,255,255,0.06);
+  --muted-foreground: #8D9AB0;
+  --accent: rgba(251,191,36,0.12);
+  --accent-foreground: #FBBF24;
+  --destructive: oklch(0.704 0.191 22.216);
+  --border: rgba(255,255,255,0.10);
+  --input: rgba(255,255,255,0.07);
+  --ring: #FBBF24;
+  --sidebar: rgba(255,255,255,0.04);
+  --sidebar-foreground: #F5F5F7;
+  --sidebar-primary: #FBBF24;
+  --sidebar-primary-foreground: #06090F;
+  --sidebar-accent: rgba(251,191,36,0.12);
+  --sidebar-accent-foreground: #FBBF24;
+  --sidebar-border: rgba(255,255,255,0.10);
+  --sidebar-ring: #FBBF24;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 5rem;
+    -webkit-text-size-adjust: 100%;
+    /* clip prevents horizontal scroll without creating a scroll container
+       (overflow:hidden on html/body blocks touch events on iOS Safari) */
+    overflow-x: clip;
+  }
+
+  /* Mobile / touch: avoid smooth-scroll jank and improve tap response */
+  @media (hover: none) and (pointer: coarse) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+
+  a, button, [role="button"], input, select, textarea {
+    touch-action: manipulation;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+    position: relative;
+    /* Do NOT set overflow-x:hidden on body — it makes body a scroll container
+       which prevents touch events from reaching fixed elements on iOS Safari */
+  }
+
+  /* ── Light mode: soft edge glows — no muddy center blob ── */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -2;
+    pointer-events: none;
+    background:
+      radial-gradient(ellipse 55% 45% at 0% 0%,   rgba(184,118,10,0.07)  0%, transparent 55%),
+      radial-gradient(ellipse 50% 40% at 100% 0%, rgba(30, 58,138,0.05)  0%, transparent 50%),
+      radial-gradient(ellipse 60% 35% at 50% 100%, rgba(184,118,10,0.05) 0%, transparent 55%),
+      #F5F5F7;
+  }
+
+  /* ── Dark mode: deep space with soft glow orbs ── */
+  .dark body::before {
+    background:
+      radial-gradient(ellipse 75% 55% at 10%  5%,  rgba(30, 58,138,0.45)  0%, transparent 55%),
+      radial-gradient(ellipse 55% 45% at 90%  5%,  rgba(251,191, 36,0.12) 0%, transparent 50%),
+      radial-gradient(ellipse 60% 50% at 50% 95%,  rgba(30, 58,138,0.30)  0%, transparent 55%),
+      #06090F;
+  }
+
+  body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+  }
+
+  /* Custom Scrollbar */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--gold);
+    border-radius: 9999px;
+    opacity: 0.6;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--gold-light);
+  }
+
+  /* Text selection */
+  ::selection {
+    background: var(--gold-muted);
+    color: var(--gold);
+  }
+
+  /* Focus ring in gold */
+  :focus-visible {
+    outline: 2px solid var(--gold);
+    outline-offset: 2px;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* ────────────────────────────────────────────
+   UTILITIES — LIQUID GLASS SYSTEM
+──────────────────────────────────────────── */
+@layer utilities {
+
+  /* ── Gradient helpers ── */
+  .gold-gradient {
+    background: linear-gradient(135deg, var(--gold-dark), var(--gold), var(--gold-light));
+  }
+  .navy-gradient {
+    background: linear-gradient(135deg, #0F172A, #1E3A8A);
+  }
+  .gold-gradient-text {
+    background: linear-gradient(135deg, var(--gold-dark), var(--gold), var(--gold-light));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .navy-gradient-text {
+    background: linear-gradient(135deg, #1E3A8A, #3B82F6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .gold-shimmer-text {
+    background: linear-gradient(90deg, var(--gold-dark) 0%, var(--gold) 30%, var(--gold-light) 55%, var(--gold) 75%, var(--gold-dark) 100%);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: gold-shimmer 5s linear infinite;
+  }
+  @keyframes gold-shimmer {
+    to { background-position: 200% center; }
+  }
+  .gold-border-gradient {
+    border: 1px solid transparent;
+    background-clip: padding-box;
+    position: relative;
+  }
+  .gold-border-gradient::before {
+    content: "";
+    position: absolute;
+    inset: -1px;
+    border-radius: inherit;
+    background: linear-gradient(135deg, var(--gold-dark), var(--gold), var(--gold-light));
+    z-index: -1;
+  }
+
+  /* ──────────────────────────────────────────────────
+     LIQUID GLASS — Apple visionOS / iOS 26 style
+     Three layers: blur + translucent fill + specular
+  ────────────────────────────────────────────────── */
+
+  /* Base glass panel (cards, containers) — light mode: opaque ivory for legibility */
+  .glass {
+    backdrop-filter: blur(40px) saturate(160%) brightness(1.0);
+    -webkit-backdrop-filter: blur(40px) saturate(160%) brightness(1.0);
+    background: rgba(252, 250, 246, 0.94);
+    border: 1px solid rgba(0, 0, 0, 0.09);
+    box-shadow:
+      0 2px 0  0   rgba(255,255,255,0.90) inset,
+      0 1px 24px 0 rgba(0,0,0,0.07),
+      0 0   0  1px rgba(0,0,0,0.04) inset;
+  }
+  .dark .glass {
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.12);
+    box-shadow:
+      0 2px 0  0   rgba(255,255,255,0.12) inset,
+      0 1px 40px 0 rgba(0,0,0,0.45),
+      0 0   0  1px rgba(255,255,255,0.05) inset;
+  }
+
+  /* Heavier glass for navbars / overlays */
+  .glass-heavy {
+    backdrop-filter: blur(60px) saturate(180%) brightness(1.0);
+    -webkit-backdrop-filter: blur(60px) saturate(180%) brightness(1.0);
+    background: rgba(252, 250, 246, 0.96);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    box-shadow:
+      0 1px 0 0 rgba(255,255,255,0.95) inset,
+      0 4px 24px 0 rgba(0,0,0,0.07);
+  }
+  .dark .glass-heavy {
+    background: rgba(6,9,15,0.75);
+    border-bottom: 1px solid rgba(255,255,255,0.10);
+    box-shadow:
+      0 1px 0 0 rgba(255,255,255,0.08) inset,
+      0 4px 32px 0 rgba(0,0,0,0.60);
+  }
+
+  /* Light tinted glass (subtle section backgrounds) */
+  .glass-tint {
+    backdrop-filter: blur(24px) saturate(160%);
+    -webkit-backdrop-filter: blur(24px) saturate(160%);
+    background: rgba(248, 246, 242, 0.92);
+    border: 1px solid rgba(0, 0, 0, 0.07);
+    box-shadow:
+      0 1px 0 0 rgba(255,255,255,0.85) inset,
+      0 1px 16px 0 rgba(0,0,0,0.06);
+  }
+  .dark .glass-tint {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    box-shadow:
+      0 1px 0 0 rgba(255,255,255,0.06) inset,
+      0 1px 20px 0 rgba(0,0,0,0.30);
+  }
+
+  /* Gold-accented glass (highlighted cards, CTAs) */
+  .glass-gold {
+    backdrop-filter: blur(40px) saturate(160%);
+    -webkit-backdrop-filter: blur(40px) saturate(160%);
+    background: rgba(255, 251, 243, 0.94);
+    border: 1px solid rgba(184,118,10,0.28);
+    box-shadow:
+      0 2px 0 0 rgba(255,255,255,0.85) inset,
+      0 0 0 1px rgba(184,118,10,0.10) inset,
+      0 4px 28px 0 rgba(184,118,10,0.10);
+  }
+  .dark .glass-gold {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(251,191,36,0.22);
+    box-shadow:
+      0 2px 0 0 rgba(255,255,255,0.09) inset,
+      0 0 0 1px rgba(251,191,36,0.08) inset,
+      0 4px 40px 0 rgba(251,191,36,0.10);
+  }
+
+  /* Legacy alias — glass-dark mirrors glass-heavy styles */
+  .glass-dark {
+    backdrop-filter: blur(60px) saturate(180%) brightness(1.0);
+    -webkit-backdrop-filter: blur(60px) saturate(180%) brightness(1.0);
+    background: rgba(252, 250, 246, 0.96);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    box-shadow: 0 1px 0 0 rgba(255,255,255,0.95) inset, 0 4px 24px 0 rgba(0,0,0,0.07);
+  }
+  .dark .glass-dark {
+    background: rgba(6,9,15,0.75);
+    border-bottom: 1px solid rgba(255,255,255,0.10);
+    box-shadow: 0 1px 0 0 rgba(255,255,255,0.08) inset, 0 4px 32px 0 rgba(0,0,0,0.60);
+  }
+
+  /* section-warm as tint glass */
+  .section-warm {
+    backdrop-filter: blur(24px) saturate(160%);
+    -webkit-backdrop-filter: blur(24px) saturate(160%);
+    background: rgba(248, 246, 242, 0.92);
+    border: 1px solid rgba(0, 0, 0, 0.07);
+    box-shadow: 0 1px 0 0 rgba(255,255,255,0.85) inset, 0 1px 16px 0 rgba(0,0,0,0.06);
+  }
+  .dark .section-warm {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    box-shadow: 0 1px 0 0 rgba(255,255,255,0.06) inset, 0 1px 20px 0 rgba(0,0,0,0.30);
+  }
+
+  .font-heading { font-family: var(--font-playfair), Georgia, serif; }
+
+  /* Hero background */
+  .hero-bg { background: transparent; }
+  .dark .hero-bg { background: transparent; }
+
+  /* Ornamental pattern */
+  .ornament-meander {
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 20' width='80' height='20'><path fill='none' stroke='%23B8760A' stroke-width='1.2' stroke-opacity='0.35' d='M0 18 V6 H8 V14 H4 V10 H12 V18 H20 V6 H28 V14 H24 V10 H32 V18 H40 V6 H48 V14 H44 V10 H52 V18 H60 V6 H68 V14 H64 V10 H72 V18 H80'/></svg>");
+    background-repeat: repeat-x;
+    background-size: 80px 20px;
+  }
+  .dark .ornament-meander {
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 20' width='80' height='20'><path fill='none' stroke='%23FBBF24' stroke-width='1.2' stroke-opacity='0.22' d='M0 18 V6 H8 V14 H4 V10 H12 V18 H20 V6 H28 V14 H24 V10 H72 V18 H80'/></svg>");
+  }
+
+  .bg-navy-section {
+    background: rgba(6,9,15,0.85);
+    backdrop-filter: blur(20px);
+  }
+
+  /* ── Animations ── */
+  @keyframes float-y {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+  }
+  .animate-float { animation: float-y 4s ease-in-out infinite; }
+
+  @keyframes pulse-glow {
+    0%, 100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--gold) 50%, transparent); }
+    50% { box-shadow: 0 0 0 12px color-mix(in srgb, var(--gold) 0%, transparent); }
+  }
+  .animate-pulse-glow { animation: pulse-glow 2.5s ease-out infinite; }
+
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+  }
+  .animate-marquee { animation: marquee 40s linear infinite; }
+
+  @keyframes ken-burns {
+    0%   { transform: scale(1) translate(0, 0); }
+    50%  { transform: scale(1.08) translate(-1%, -1%); }
+    100% { transform: scale(1) translate(0, 0); }
+  }
+  .animate-ken-burns { animation: ken-burns 18s ease-in-out infinite; }
+
+  .card-tilt {
+    transition: transform 0.4s cubic-bezier(0.17, 0.67, 0.5, 1.2), box-shadow 0.4s ease;
+  }
+  .card-tilt:hover { transform: translateY(-4px); }
+
+  /* ── Reduced motion ── */
+  @media (prefers-reduced-motion: reduce) {
+    .animate-float, .animate-pulse-glow, .animate-marquee, .animate-ken-burns, .gold-shimmer-text {
+      animation: none !important;
+    }
+  }
+  html.reduce-motion *, html.reduce-motion *::before, html.reduce-motion *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+  html.reduce-motion .animate-float, html.reduce-motion .animate-pulse-glow,
+  html.reduce-motion .animate-marquee, html.reduce-motion .animate-ken-burns,
+  html.reduce-motion .gold-shimmer-text { animation: none !important; }
+
+  /* ── High contrast ── */
+  html.high-contrast { --border: oklch(0.5 0 0); --muted-foreground: oklch(0.25 0 0); }
+  html.dark.high-contrast { --border: oklch(0.7 0 0); --muted-foreground: oklch(0.85 0 0); }
+  html.high-contrast a, html.high-contrast button, html.high-contrast [role="button"] {
+    text-decoration-thickness: 2px;
+  }
+  html.high-contrast :focus-visible { outline: 3px solid var(--gold) !important; outline-offset: 2px !important; }
 }
+
+/* Particle canvas */
+#particle-canvas {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+/* Mobile touch fixes are handled in JS:
+   - MobileMotionFix.tsx (overrides framer-motion inline opacity:0)
+   - useTouchDevice + initial={false} on all landing components
+   Do NOT add @media + class-selector combos here — Turbopack rejects them. */

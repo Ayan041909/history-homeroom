@@ -1,0 +1,287 @@
+{
+  "device": "iPhone 17 Pro (402x874, WebKit/Safari)",
+  "timestamp": "2026-06-16T21:14:07.957Z",
+  "issueCount": 56,
+  "issues": [
+    {
+      "page": "landing",
+      "category": "tap-target",
+      "msg": "Too small (40x40px): \"History Homeroom\""
+    },
+    {
+      "page": "landing",
+      "category": "interaction",
+      "msg": "Hamburger menu tap failed: locator.click: Timeout 8000ms exceeded."
+    },
+    {
+      "page": "landing",
+      "category": "carousel",
+      "msg": "Events carousel next button: locator.click: Timeout 5000ms exceeded."
+    },
+    {
+      "page": "landing",
+      "category": "carousel",
+      "msg": "Testimonials carousel: locator.click: Timeout 5000ms exceeded."
+    },
+    {
+      "page": "lessons",
+      "category": "invisible-blocker",
+      "msg": "DIV opacity=0 370x288 at y=148 class=\"\""
+    },
+    {
+      "page": "lessons",
+      "category": "invisible-blocker",
+      "msg": "DIV opacity=0 370x356 at y=773 class=\"rounded-2xl border border-border bg-card hover:border-gold/3\""
+    },
+    {
+      "page": "lessons",
+      "category": "tap-target",
+      "msg": "Too small (40x40px): \"History Homeroom\""
+    },
+    {
+      "page": "lessons",
+      "category": "tap-target",
+      "msg": "Too small (41x34px): \"All\""
+    },
+    {
+      "page": "lessons",
+      "category": "tap-target",
+      "msg": "Too small (126x34px): \"Ancient History\""
+    },
+    {
+      "page": "lessons",
+      "category": "tap-target",
+      "msg": "Too small (135x34px): \"Medieval History\""
+    },
+    {
+      "page": "lessons",
+      "category": "tap-target",
+      "msg": "Too small (126x34px): \"Modern History\""
+    },
+    {
+      "page": "lessons",
+      "category": "tap-target",
+      "msg": "Too small (128x34px): \"Cultural History\""
+    },
+    {
+      "page": "lessons",
+      "category": "tap-target",
+      "msg": "Too small (115x34px): \"World History\""
+    },
+    {
+      "page": "lessons",
+      "category": "tap-target",
+      "msg": "Too small (88x34px): \"Free Only\""
+    },
+    {
+      "page": "events",
+      "category": "tap-target",
+      "msg": "Too small (40x40px): \"History Homeroom\""
+    },
+    {
+      "page": "events",
+      "category": "tap-target",
+      "msg": "Too small (73x34px): \"All Eras\""
+    },
+    {
+      "page": "events",
+      "category": "tap-target",
+      "msg": "Too small (76x34px): \"Ancient\""
+    },
+    {
+      "page": "events",
+      "category": "tap-target",
+      "msg": "Too small (85x34px): \"Classical\""
+    },
+    {
+      "page": "events",
+      "category": "tap-target",
+      "msg": "Too small (85x34px): \"Medieval\""
+    },
+    {
+      "page": "events",
+      "category": "tap-target",
+      "msg": "Too small (112x34px): \"Early Modern\""
+    },
+    {
+      "page": "events",
+      "category": "tap-target",
+      "msg": "Too small (76x34px): \"Modern\""
+    },
+    {
+      "page": "events",
+      "category": "tap-target",
+      "msg": "Too small (120x34px): \"Contemporary\""
+    },
+    {
+      "page": "resources",
+      "category": "invisible-blocker",
+      "msg": "DIV opacity=0 370x222 at y=148 class=\"\""
+    },
+    {
+      "page": "resources",
+      "category": "invisible-blocker",
+      "msg": "DIV opacity=0 370x190 at y=547 class=\"rounded-3xl border border-gold/20 bg-gradient-to-br from-car\""
+    },
+    {
+      "page": "resources",
+      "category": "tap-target",
+      "msg": "Too small (40x40px): \"History Homeroom\""
+    },
+    {
+      "page": "resources",
+      "category": "tap-target",
+      "msg": "Too small (146x22px): \"Video Library\""
+    },
+    {
+      "page": "resources",
+      "category": "tap-target",
+      "msg": "Too small (172x22px): \"Study Resources\""
+    },
+    {
+      "page": "resources",
+      "category": "tap-target",
+      "msg": "Too small (39x30px): \"All\""
+    },
+    {
+      "page": "resources",
+      "category": "tap-target",
+      "msg": "Too small (112x30px): \"Ancient History\""
+    },
+    {
+      "page": "resources",
+      "category": "tap-target",
+      "msg": "Too small (120x30px): \"Medieval History\""
+    },
+    {
+      "page": "resources",
+      "category": "tap-target",
+      "msg": "Too small (112x30px): \"Modern History\""
+    },
+    {
+      "page": "resources",
+      "category": "tap-target",
+      "msg": "Too small (102x30px): \"World History\""
+    },
+    {
+      "page": "resources",
+      "category": "tap-target",
+      "msg": "Too small (114x30px): \"Cultural History\""
+    },
+    {
+      "page": "about",
+      "category": "layout",
+      "msg": "Horizontal scroll detected (scrollWidth 416 > viewport 402)"
+    },
+    {
+      "page": "about",
+      "category": "invisible-blocker",
+      "msg": "DIV opacity=0 370x258 at y=190 class=\"\""
+    },
+    {
+      "page": "about",
+      "category": "invisible-blocker",
+      "msg": "DIV opacity=0 370x276 at y=579 class=\"\""
+    },
+    {
+      "page": "about",
+      "category": "tap-target",
+      "msg": "Too small (40x40px): \"History Homeroom\""
+    },
+    {
+      "page": "contact",
+      "category": "invisible-blocker",
+      "msg": "DIV opacity=0 370x194 at y=148 class=\"\""
+    },
+    {
+      "page": "contact",
+      "category": "invisible-blocker",
+      "msg": "DIV opacity=0 370x102 at y=443 class=\"flex items-start gap-4 p-5 rounded-2xl border border-border \""
+    },
+    {
+      "page": "contact",
+      "category": "invisible-blocker",
+      "msg": "DIV opacity=0 370x102 at y=565 class=\"flex items-start gap-4 p-5 rounded-2xl border border-border \""
+    },
+    {
+      "page": "contact",
+      "category": "invisible-blocker",
+      "msg": "DIV opacity=0 370x102 at y=687 class=\"flex items-start gap-4 p-5 rounded-2xl border border-border \""
+    },
+    {
+      "page": "contact",
+      "category": "invisible-blocker",
+      "msg": "DIV opacity=0 370x102 at y=809 class=\"flex items-start gap-4 p-5 rounded-2xl border border-border \""
+    },
+    {
+      "page": "contact",
+      "category": "tap-target",
+      "msg": "Too small (40x40px): \"History Homeroom\""
+    },
+    {
+      "page": "faq",
+      "category": "tap-target",
+      "msg": "Too small (40x40px): \"History Homeroom\""
+    },
+    {
+      "page": "faq",
+      "category": "tap-target",
+      "msg": "Too small (49x38px): \"All\""
+    },
+    {
+      "page": "faq",
+      "category": "tap-target",
+      "msg": "Too small (135x38px): \"Getting Started\""
+    },
+    {
+      "page": "faq",
+      "category": "tap-target",
+      "msg": "Too small (127x38px): \"Billing & Plans\""
+    },
+    {
+      "page": "faq",
+      "category": "tap-target",
+      "msg": "Too small (88x38px): \"Tutoring\""
+    },
+    {
+      "page": "faq",
+      "category": "tap-target",
+      "msg": "Too small (89x38px): \"Account\""
+    },
+    {
+      "page": "faq",
+      "category": "tap-target",
+      "msg": "Too small (89x38px): \"Security\""
+    },
+    {
+      "page": "login",
+      "category": "tap-target",
+      "msg": "Too small (207x36px): \"History Homeroom\""
+    },
+    {
+      "page": "login",
+      "category": "tap-target",
+      "msg": "Too small (99x16px): \"Forgot password?\""
+    },
+    {
+      "page": "login",
+      "category": "tap-target",
+      "msg": "Too small (16x16px): \"Show password\""
+    },
+    {
+      "page": "login",
+      "category": "tap-target",
+      "msg": "Too small (103x20px): \"Create account\""
+    },
+    {
+      "page": "login",
+      "category": "tap-target",
+      "msg": "Too small (33x16px): \"Terms\""
+    },
+    {
+      "page": "login",
+      "category": "tap-target",
+      "msg": "Too small (76x16px): \"Privacy Policy\""
+    }
+  ]
+}

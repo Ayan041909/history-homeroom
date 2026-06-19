@@ -1,0 +1,265 @@
+{
+  "timestamp": "2026-06-16T17:26:15.015Z",
+  "device": "iPhone 13",
+  "totalIssues": 43,
+  "findings": [
+    {
+      "page": "landing",
+      "category": "broken-target",
+      "message": "Learn: zero-size (0x0)",
+      "selector": null
+    },
+    {
+      "page": "landing",
+      "category": "broken-target",
+      "message": "Pricing: zero-size (0x0)",
+      "selector": null
+    },
+    {
+      "page": "landing",
+      "category": "broken-target",
+      "message": "About: zero-size (0x0)",
+      "selector": null
+    },
+    {
+      "page": "landing",
+      "category": "broken-target",
+      "message": "FAQ: zero-size (0x0)",
+      "selector": null
+    },
+    {
+      "page": "landing",
+      "category": "broken-target",
+      "message": "Contact: zero-size (0x0)",
+      "selector": null
+    },
+    {
+      "page": "landing",
+      "category": "broken-target",
+      "message": "Sign In: zero-size (0x0)",
+      "selector": null
+    },
+    {
+      "page": "landing",
+      "category": "broken-target",
+      "message": "Get Started: zero-size (0x0)",
+      "selector": null
+    },
+    {
+      "page": "lessons",
+      "category": "invisible-blocker",
+      "message": "Large near-invisible element (0 opacity): DIV 358x310 mt-16 p-8 rounded-3xl border border-gold/20 bg-gold/3 text-center",
+      "selector": null
+    },
+    {
+      "page": "lessons",
+      "category": "broken-target",
+      "message": "Learn: zero-size (0x0)",
+      "selector": null
+    },
+    {
+      "page": "lessons",
+      "category": "broken-target",
+      "message": "Pricing: zero-size (0x0)",
+      "selector": null
+    },
+    {
+      "page": "lessons",
+      "category": "broken-target",
+      "message": "About: zero-size (0x0)",
+      "selector": null
+    },
+    {
+      "page": "lessons",
+      "category": "broken-target",
+      "message": "FAQ: zero-size (0x0)",
+      "selector": null
+    },
+    {
+      "page": "lessons",
+      "category": "broken-target",
+      "message": "Contact: zero-size (0x0)",
+      "selector": null
+    },
+    {
+      "page": "lessons",
+      "category": "broken-target",
+      "message": "Sign In: zero-size (0x0)",
+      "selector": null
+    },
+    {
+      "page": "lessons",
+      "category": "broken-target",
+      "message": "Get Started: zero-size (0x0)",
+      "selector": null
+    },
+    {
+      "page": "events",
+      "category": "broken-target",
+      "message": "Learn: zero-size (0x0)",
+      "selector": null
+    },
+    {
+      "page": "events",
+      "category": "broken-target",
+      "message": "Pricing: zero-size (0x0)",
+      "selector": null
+    },
+    {
+      "page": "events",
+      "category": "broken-target",
+      "message": "About: zero-size (0x0)",
+      "selector": null
+    },
+    {
+      "page": "events",
+      "category": "broken-target",
+      "message": "FAQ: zero-size (0x0)",
+      "selector": null
+    },
+    {
+      "page": "events",
+      "category": "broken-target",
+      "message": "Contact: zero-size (0x0)",
+      "selector": null
+    },
+    {
+      "page": "events",
+      "category": "broken-target",
+      "message": "Sign In: zero-size (0x0)",
+      "selector": null
+    },
+    {
+      "page": "events",
+      "category": "broken-target",
+      "message": "Get Started: zero-size (0x0)",
+      "selector": null
+    },
+    {
+      "page": "resources",
+      "category": "broken-target",
+      "message": "Learn: zero-size (0x0)",
+      "selector": null
+    },
+    {
+      "page": "resources",
+      "category": "broken-target",
+      "message": "Pricing: zero-size (0x0)",
+      "selector": null
+    },
+    {
+      "page": "resources",
+      "category": "broken-target",
+      "message": "About: zero-size (0x0)",
+      "selector": null
+    },
+    {
+      "page": "resources",
+      "category": "broken-target",
+      "message": "FAQ: zero-size (0x0)",
+      "selector": null
+    },
+    {
+      "page": "resources",
+      "category": "broken-target",
+      "message": "Contact: zero-size (0x0)",
+      "selector": null
+    },
+    {
+      "page": "resources",
+      "category": "broken-target",
+      "message": "Sign In: zero-size (0x0)",
+      "selector": null
+    },
+    {
+      "page": "resources",
+      "category": "broken-target",
+      "message": "Get Started: zero-size (0x0)",
+      "selector": null
+    },
+    {
+      "page": "about",
+      "category": "broken-target",
+      "message": "Learn: zero-size (0x0)",
+      "selector": null
+    },
+    {
+      "page": "about",
+      "category": "broken-target",
+      "message": "Pricing: zero-size (0x0)",
+      "selector": null
+    },
+    {
+      "page": "about",
+      "category": "broken-target",
+      "message": "About: zero-size (0x0)",
+      "selector": null
+    },
+    {
+      "page": "about",
+      "category": "broken-target",
+      "message": "FAQ: zero-size (0x0)",
+      "selector": null
+    },
+    {
+      "page": "about",
+      "category": "broken-target",
+      "message": "Contact: zero-size (0x0)",
+      "selector": null
+    },
+    {
+      "page": "about",
+      "category": "broken-target",
+      "message": "Sign In: zero-size (0x0)",
+      "selector": null
+    },
+    {
+      "page": "about",
+      "category": "broken-target",
+      "message": "Get Started: zero-size (0x0)",
+      "selector": null
+    },
+    {
+      "page": "contact",
+      "category": "broken-target",
+      "message": "Learn: zero-size (0x0)",
+      "selector": null
+    },
+    {
+      "page": "contact",
+      "category": "broken-target",
+      "message": "Pricing: zero-size (0x0)",
+      "selector": null
+    },
+    {
+      "page": "contact",
+      "category": "broken-target",
+      "message": "About: zero-size (0x0)",
+      "selector": null
+    },
+    {
+      "page": "contact",
+      "category": "broken-target",
+      "message": "FAQ: zero-size (0x0)",
+      "selector": null
+    },
+    {
+      "page": "contact",
+      "category": "broken-target",
+      "message": "Contact: zero-size (0x0)",
+      "selector": null
+    },
+    {
+      "page": "contact",
+      "category": "broken-target",
+      "message": "Sign In: zero-size (0x0)",
+      "selector": null
+    },
+    {
+      "page": "contact",
+      "category": "broken-target",
+      "message": "Get Started: zero-size (0x0)",
+      "selector": null
+    }
+  ]
+}
