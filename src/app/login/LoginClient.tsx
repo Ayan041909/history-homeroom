@@ -65,7 +65,9 @@ export function LoginClient() {
     const err = params.get("error");
     if (!err) return;
     if (err === "auth_callback_failed") {
-      setError("Google sign-in could not be completed. Please try again.");
+      setError(
+        "Google sign-in could not be completed. Check that your Supabase redirect URL matches this site's /auth/callback path exactly, then try again in incognito.",
+      );
     } else {
       try {
         setError(decodeURIComponent(err));

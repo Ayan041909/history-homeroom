@@ -19,15 +19,35 @@ export function AuthCallbackClient() {
     if (handled.current) return;
     handled.current = true;
 
-    const code = params.get("code");
-    const next = getSafeRedirectTarget(params.get("next")) ?? STUDENT_DASHBOARD;
+    const search =
+      typeof window !== "undefined"
+        ? new URLSearchParams(window.location.search)
+        : params;
 
-    if (!code) {
-      router.replace("/login?error=auth_callback_failed");
+    const next = getSafeRedirectTarget(search.get("next")) ?? STUDENT_DASHBOARD;
+
+    const oauthError = search.get("error");
+    const oauthErrorDescription = search.get("error_description");
+    if (oauthError) {
+      const message = oauthErrorDescription ?? oauthError;
+      router.replace(`/login?error=${encodeURIComponent(message)}`);
       return;
     }
 
+    const code = search.get("code");
     const supabase = createClient();
+
+    if (!code) {
+      void supabase.auth.getSession().then(({ data: { session } }) => {
+        if (session) {
+          router.replace(next);
+          return;
+        }
+        router.replace("/login?error=auth_callback_failed");
+      });
+      return;
+    }
+
     void supabase.auth.exchangeCodeForSession(code).then(({ error }) => {
       if (error) {
         router.replace(`/login?error=${encodeURIComponent(error.message)}`);
