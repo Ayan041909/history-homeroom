@@ -5,6 +5,7 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { Check, Zap, Crown, BookOpen, Gift } from "lucide-react";
 import { useTouchDevice } from "@/hooks/useTouchDevice";
+import { useAuth } from "@/hooks/useAuth";
 
 const PLANS = [
   {
@@ -70,6 +71,15 @@ const PLANS = [
 export function PricingSection() {
   const isTouch = useTouchDevice();
   const [annual, setAnnual] = useState(false);
+  const { profile } = useAuth();
+
+  // Authenticated users go straight to payment/dashboard; guests go to sign-up.
+  function planHref(planId: string): string {
+    if (!profile) {
+      return planId === "free" ? "/login?signup=true" : `/login?signup=true&plan=${planId}`;
+    }
+    return planId === "free" ? "/home" : `/payment?plan=${planId}`;
+  }
 
   return (
     <section id="pricing" className="py-24 px-4 sm:px-6 relative overflow-hidden" aria-label="Pricing plans">
@@ -178,7 +188,7 @@ export function PricingSection() {
 
                 {/* CTA */}
                 <Link
-                  href={plan.href}
+                  href={planHref(plan.id)}
                   className={`block text-center py-3 px-6 rounded-full font-semibold text-sm transition-all focus-visible:ring-2 focus-visible:ring-gold ${
                     plan.highlighted
                       ? "gold-gradient text-white shadow-lg shadow-gold/25 hover:opacity-90"
@@ -186,7 +196,7 @@ export function PricingSection() {
                   }`}
                   aria-label={`${plan.cta} — ${plan.name} plan`}
                 >
-                  {plan.cta}
+                  {profile && plan.id !== "free" ? "Start Trial" : plan.cta}
                 </Link>
               </motion.div>
             );

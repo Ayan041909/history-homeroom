@@ -4,6 +4,7 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { UserPlus, BookOpen, Calendar, Trophy, ArrowRight } from "lucide-react";
 import { useTouchDevice } from "@/hooks/useTouchDevice";
+import { useAuth } from "@/hooks/useAuth";
 
 const STEPS = [
   {
@@ -38,6 +39,8 @@ const STEPS = [
 
 export function HowToGuide() {
   const isTouch = useTouchDevice();
+  const { profile } = useAuth();
+  const journeyHref = profile ? "/home" : "/login?signup=true";
   return (
     <section id="guide" className="py-24 px-4 sm:px-6  relative overflow-hidden" aria-label="How to use History Homeroom">
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_45%_at_50%_0%,rgba(184,118,10,0.04),transparent)]" aria-hidden="true" />
@@ -110,11 +113,11 @@ export function HowToGuide() {
           className="text-center mt-16"
         >
           <Link
-            href="/login?signup=true"
+            href={journeyHref}
             className="inline-flex items-center gap-2 px-8 py-4 rounded-2xl font-bold text-base text-white gold-gradient shadow-xl shadow-gold/30 hover:opacity-90 transition-opacity focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2"
             aria-label="Begin your history learning journey"
           >
-            Begin Your Journey
+            {profile ? "Go to Dashboard" : "Begin Your Journey"}
             <ArrowRight size={16} aria-hidden="true" />
           </Link>
         </motion.div>

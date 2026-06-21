@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { BookOpen, Play, Clock, Users, Star, Lock, Search, ChevronRight, ChevronLeft, CheckCircle2 } from "lucide-react";
 import Link from "next/link";
@@ -231,10 +231,15 @@ export default function LessonsPage() {
   const [level, setLevel] = useState("All Levels");
   // Pre-populate search from URL query param so the Events page can deep-link
   // into a filtered view (e.g. /lessons?search=renaissance).
-  const [search, setSearch] = useState(() => {
-    if (typeof window === "undefined") return "";
-    return new URLSearchParams(window.location.search).get("search") ?? "";
-  });
+  const [search, setSearch] = useState("");
+  useEffect(() => {
+    const urlSearch = new URLSearchParams(window.location.search).get("search") ?? "";
+    if (urlSearch) {
+      setSearch(urlSearch);
+      setPage(1);
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   const [freeOnly, setFreeOnly] = useState(false);
   const [page, setPage] = useState(1);
   const toast = useToast();
@@ -258,7 +263,15 @@ export default function LessonsPage() {
       if (subject !== "All" && l.subject !== subject) return false;
       if (level !== "All Levels" && l.level !== level) return false;
       if (freeOnly && l.tier !== "free") return false;
-      if (search && !l.title.toLowerCase().includes(search.toLowerCase())) return false;
+      if (search) {
+        const q = search.toLowerCase();
+        const hay = `${l.title} ${l.subject} ${l.description ?? ""}`.toLowerCase();
+        // Support multi-word event searches: match if the full phrase OR any
+        // individual token appears in the lesson title/subject/description.
+        const tokens = q.split(/\s+/).filter((t) => t.length > 1);
+        const matches = hay.includes(q) || tokens.some((t) => hay.includes(t));
+        if (!matches) return false;
+      }
       return true;
     });
   }, [subject, level, freeOnly, search]);

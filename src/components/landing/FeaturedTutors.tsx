@@ -7,9 +7,12 @@ import { Star, GraduationCap, Users, ArrowRight } from "lucide-react";
 import { FEATURED_TUTORS } from "@/lib/mockData";
 import { getTutorImagePosition } from "@/lib/images";
 import { useTouchDevice } from "@/hooks/useTouchDevice";
+import { useAuth } from "@/hooks/useAuth";
 
 export function FeaturedTutors() {
   const isTouch = useTouchDevice();
+  const { profile } = useAuth();
+  const bookHref = profile ? "/home" : "/login?signup=true";
   return (
     <section className="py-24 px-4 sm:px-6 relative overflow-hidden" aria-label="Featured tutors">
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_50%_at_50%_0%,rgba(184,118,10,0.07),transparent)]" aria-hidden="true" />
@@ -84,7 +87,7 @@ export function FeaturedTutors() {
                   </span>
                 </div>
                 <Link
-                  href="/login?signup=true"
+                  href={bookHref}
                   className="w-full block text-center py-3 min-h-[44px] rounded-xl text-xs font-bold border border-gold/40 hover:border-gold/70 hover:bg-gold/8 transition-colors focus-visible:ring-2 focus-visible:ring-gold touch-manipulation"
                 >
                   Book a Session
