@@ -82,9 +82,7 @@ export function ChatBot() {
   const messageIdRef = useRef(0);
   const pathname = usePathname();
   const isTouch = useTouchDevice();
-
-  // Hide on auth pages — login/signup should stay focused and uncluttered.
-  if (pathname === "/login") return null;
+  const hideOnPage = pathname === "/login" || pathname === "/reset-data";
 
   const nextId = () => {
     messageIdRef.current += 1;
@@ -133,6 +131,8 @@ export function ChatBot() {
     }
     if (e.key === "Escape") setOpen(false);
   };
+
+  if (hideOnPage) return null;
 
   return (
     <>

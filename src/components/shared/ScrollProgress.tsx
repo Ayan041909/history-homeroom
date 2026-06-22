@@ -1,6 +1,7 @@
 "use client";
 
 import { motion, useReducedMotion, useScroll, useSpring } from "framer-motion";
+import { usePathname } from "next/navigation";
 import { useTouchDevice } from "@/hooks/useTouchDevice";
 
 /**
@@ -8,6 +9,7 @@ import { useTouchDevice } from "@/hooks/useTouchDevice";
  * Sits above the navbar and shows reading progress on every page.
  */
 export function ScrollProgress() {
+  const pathname = usePathname();
   const isTouch = useTouchDevice();
   const shouldReduce = useReducedMotion();
   const { scrollYProgress } = useScroll();
@@ -17,7 +19,7 @@ export function ScrollProgress() {
     restDelta: 0.001,
   });
 
-  if (isTouch || shouldReduce) return null;
+  if (pathname === "/login" || pathname === "/reset-data" || isTouch || shouldReduce) return null;
 
   return (
     <motion.div

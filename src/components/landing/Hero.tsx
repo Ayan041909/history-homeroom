@@ -138,7 +138,7 @@ export function Hero() {
       aria-label="Hero section"
     >
       {/* Background layers — decorative only, never intercept touches */}
-      <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden" aria-hidden="true">
+      <div className="hero-decorative-bg absolute inset-0 z-0 pointer-events-none overflow-hidden" aria-hidden="true">
         {isDark ? (
           <>
             <ExternalImage

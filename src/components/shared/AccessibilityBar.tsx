@@ -51,11 +51,11 @@ export function AccessibilityBar() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={reduceMotion ? undefined : { opacity: 0, y: 10, scale: 0.95 }}
             transition={reduceMotion ? { duration: 0 } : { duration: 0.2 }}
-            className="absolute bottom-14 left-0 w-60 rounded-xl border border-gold/25 p-4 shadow-xl backdrop-blur-xl bg-neutral-950/90 dark:bg-black/92 text-foreground"
+            className="absolute bottom-14 left-0 w-60 rounded-xl border border-border bg-card text-card-foreground p-4 shadow-xl"
             role="dialog"
             aria-label="Accessibility settings"
           >
-            <h2 className="text-sm font-semibold mb-3 flex items-center gap-2">
+            <h2 className="text-sm font-semibold mb-3 flex items-center gap-2 text-foreground">
               <Accessibility size={14} className="text-gold" />
               Accessibility
             </h2>
@@ -66,7 +66,7 @@ export function AccessibilityBar() {
                 <button
                   type="button"
                   onClick={() => setFontSize((s) => Math.max(80, s - 10))}
-                  className="w-8 h-8 rounded-lg border border-border hover:border-gold/50 flex items-center justify-center hover:bg-gold/10 transition-colors"
+                  className="w-8 h-8 rounded-lg border border-border text-foreground hover:border-gold/50 flex items-center justify-center hover:bg-gold/10 transition-colors"
                   aria-label="Decrease font size"
                   disabled={fontSize <= 80}
                   suppressHydrationWarning
@@ -82,7 +82,7 @@ export function AccessibilityBar() {
                 <button
                   type="button"
                   onClick={() => setFontSize((s) => Math.min(140, s + 10))}
-                  className="w-8 h-8 rounded-lg border border-border hover:border-gold/50 flex items-center justify-center hover:bg-gold/10 transition-colors"
+                  className="w-8 h-8 rounded-lg border border-border text-foreground hover:border-gold/50 flex items-center justify-center hover:bg-gold/10 transition-colors"
                   aria-label="Increase font size"
                   disabled={fontSize >= 140}
                   suppressHydrationWarning
@@ -97,8 +97,8 @@ export function AccessibilityBar() {
               onClick={() => setHighContrast((c) => !c)}
               className={`w-full flex items-center justify-between px-3 py-2 rounded-lg border text-sm transition-all mb-2 ${
                 highContrast
-                  ? "border-gold bg-gold/15 text-gold"
-                  : "border-border hover:border-gold/50 hover:bg-gold/5"
+                  ? "border-gold bg-gold/15 text-foreground"
+                  : "border-border text-foreground hover:border-gold/50 hover:bg-gold/5"
               }`}
               aria-pressed={highContrast}
               suppressHydrationWarning
@@ -117,8 +117,8 @@ export function AccessibilityBar() {
               onClick={() => setReduceMotion((m) => !m)}
               className={`w-full flex items-center justify-between px-3 py-2 rounded-lg border text-sm transition-all mb-2 ${
                 reduceMotion
-                  ? "border-gold bg-gold/15 text-gold"
-                  : "border-border hover:border-gold/50 hover:bg-gold/5"
+                  ? "border-gold bg-gold/15 text-foreground"
+                  : "border-border text-foreground hover:border-gold/50 hover:bg-gold/5"
               }`}
               aria-pressed={reduceMotion}
               suppressHydrationWarning
@@ -137,8 +137,8 @@ export function AccessibilityBar() {
               onClick={() => setTextToSpeech((t) => !t)}
               className={`w-full flex items-center justify-between px-3 py-2 rounded-lg border text-sm transition-all mb-2 ${
                 textToSpeech
-                  ? "border-gold bg-gold/15 text-gold"
-                  : "border-border hover:border-gold/50 hover:bg-gold/5"
+                  ? "border-gold bg-gold/15 text-foreground"
+                  : "border-border text-foreground hover:border-gold/50 hover:bg-gold/5"
               }`}
               aria-pressed={textToSpeech}
               suppressHydrationWarning

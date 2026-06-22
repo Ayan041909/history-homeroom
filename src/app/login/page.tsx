@@ -1,20 +1,25 @@
-import { Suspense } from "react";
 import { LoginClient } from "./LoginClient";
-import { SiteLogo } from "@/components/shared/SiteLogo";
 
-export default function LoginPage() {
+type LoginPageProps = {
+  searchParams: Promise<{
+    signup?: string;
+    redirect?: string;
+    error?: string;
+    plan?: string;
+  }>;
+};
+
+/** Force dynamic so query params (signup, redirect, error) are always fresh on navigation. */
+export const dynamic = "force-dynamic";
+
+export default async function LoginPage({ searchParams }: LoginPageProps) {
+  const sp = await searchParams;
+
   return (
-    <Suspense
-      fallback={
-        <div className="min-h-dvh flex items-center justify-center bg-black">
-          <div className="flex flex-col items-center gap-4">
-            <SiteLogo size={48} showText={false} href={null} className="animate-pulse" />
-            <p className="text-neutral-400 text-sm">Loading...</p>
-          </div>
-        </div>
-      }
-    >
-      <LoginClient />
-    </Suspense>
+    <LoginClient
+      initialSignup={sp.signup === "true"}
+      initialRedirect={sp.redirect ?? null}
+      initialError={sp.error ?? null}
+    />
   );
 }

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { Eye, EyeOff, AlertCircle, CheckCircle2 } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import { getSiteOrigin, isSupabaseConfigured } from "@/lib/supabase/env";
@@ -38,15 +38,24 @@ function GoogleIcon() {
   );
 }
 
-export function LoginClient() {
+type LoginClientProps = {
+  initialSignup: boolean;
+  initialRedirect: string | null;
+  initialError: string | null;
+};
+
+export function LoginClient({
+  initialSignup,
+  initialRedirect,
+  initialError,
+}: LoginClientProps) {
   const router = useRouter();
-  const params = useSearchParams();
-  const isSignup = params.get("signup") === "true";
   const { setMockProfile } = useAuthContext();
   const toast = useToast();
   const supabaseReady = isSupabaseConfigured();
 
-  const [mode, setMode] = useState<Mode>(isSignup ? "signup" : "login");
+  const [mode, setMode] = useState<Mode>(initialSignup ? "signup" : "login");
+  const [redirectTarget, setRedirectTarget] = useState(initialRedirect);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [firstName, setFirstName] = useState("");
@@ -58,24 +67,24 @@ export function LoginClient() {
   const [resetSent, setResetSent] = useState(false);
 
   useEffect(() => {
-    setMode(isSignup ? "signup" : "login");
-  }, [isSignup]);
+    setMode(initialSignup ? "signup" : "login");
+    setRedirectTarget(initialRedirect);
+  }, [initialSignup, initialRedirect]);
 
   useEffect(() => {
-    const err = params.get("error");
-    if (!err) return;
-    if (err === "auth_callback_failed") {
+    if (!initialError) return;
+    if (initialError === "auth_callback_failed") {
       setError(
         "Google sign-in could not be completed. Check that your Supabase redirect URL matches this site's /auth/callback path exactly, then try again in incognito.",
       );
     } else {
       try {
-        setError(decodeURIComponent(err));
+        setError(decodeURIComponent(initialError));
       } catch {
-        setError(err);
+        setError(initialError);
       }
     }
-  }, [params]);
+  }, [initialError]);
 
   const useSupabaseAuth = supabaseReady;
 
@@ -85,7 +94,7 @@ export function LoginClient() {
     return () => window.clearTimeout(id);
   }, [mode]);
 
-  const destination = () => getPostLoginPath(params.get("redirect"));
+  const destination = () => getPostLoginPath(redirectTarget);
   const busy = formLoading || googleLoading;
 
   const switchMode = (next: Mode) => {
@@ -96,11 +105,16 @@ export function LoginClient() {
     setPassword("");
     setFirstName("");
     setLastName("");
-    const redirect = params.get("redirect");
     if (next === "signup") {
-      router.replace(redirect ? `/login?signup=true&redirect=${encodeURIComponent(redirect)}` : "/login?signup=true");
+      router.replace(
+        redirectTarget
+          ? `/login?signup=true&redirect=${encodeURIComponent(redirectTarget)}`
+          : "/login?signup=true",
+      );
     } else {
-      router.replace(redirect ? `/login?redirect=${encodeURIComponent(redirect)}` : "/login");
+      router.replace(
+        redirectTarget ? `/login?redirect=${encodeURIComponent(redirectTarget)}` : "/login",
+      );
     }
   };
 

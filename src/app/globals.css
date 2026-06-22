@@ -450,12 +450,120 @@
   html.reduce-motion .gold-shimmer-text { animation: none !important; }
 
   /* ── High contrast ── */
-  html.high-contrast { --border: oklch(0.5 0 0); --muted-foreground: oklch(0.25 0 0); }
-  html.dark.high-contrast { --border: oklch(0.7 0 0); --muted-foreground: oklch(0.85 0 0); }
-  html.high-contrast a, html.high-contrast button, html.high-contrast [role="button"] {
-    text-decoration-thickness: 2px;
+  html.high-contrast {
+    --background: #ffffff;
+    --foreground: #000000;
+    --card: #ffffff;
+    --card-foreground: #000000;
+    --popover: #ffffff;
+    --popover-foreground: #000000;
+    --primary: #000000;
+    --primary-foreground: #ffffff;
+    --secondary: #f0f0f0;
+    --secondary-foreground: #000000;
+    --muted: #e8e8e8;
+    --muted-foreground: #000000;
+    --accent: #000000;
+    --accent-foreground: #ffffff;
+    --border: #000000;
+    --input: #ffffff;
+    --ring: #000000;
+    --gold: #000000;
+    --gold-light: #000000;
+    --gold-dark: #000000;
   }
-  html.high-contrast :focus-visible { outline: 3px solid var(--gold) !important; outline-offset: 2px !important; }
+
+  html.high-contrast.dark {
+    --background: #000000;
+    --foreground: #ffffff;
+    --card: #000000;
+    --card-foreground: #ffffff;
+    --popover: #000000;
+    --popover-foreground: #ffffff;
+    --primary: #ffffff;
+    --primary-foreground: #000000;
+    --secondary: #1a1a1a;
+    --secondary-foreground: #ffffff;
+    --muted: #1a1a1a;
+    --muted-foreground: #ffffff;
+    --accent: #ffffff;
+    --accent-foreground: #000000;
+    --border: #ffffff;
+    --input: #000000;
+    --ring: #ffff00;
+    --gold: #ffff00;
+    --gold-light: #ffff00;
+    --gold-dark: #ffff00;
+  }
+
+  html.high-contrast body {
+    background-color: var(--background) !important;
+    color: var(--foreground) !important;
+  }
+
+  html.high-contrast .glass,
+  html.high-contrast .glass-heavy,
+  html.high-contrast .glass-tint,
+  html.high-contrast .glass-gold,
+  html.high-contrast .glass-dark,
+  html.high-contrast .section-warm {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    background: var(--card) !important;
+    border: 2px solid var(--border) !important;
+    box-shadow: none !important;
+  }
+
+  html.high-contrast .gold-gradient-text,
+  html.high-contrast .navy-gradient-text,
+  html.high-contrast .gold-shimmer-text {
+    background: none !important;
+    -webkit-background-clip: unset !important;
+    background-clip: unset !important;
+    -webkit-text-fill-color: var(--foreground) !important;
+    color: var(--foreground) !important;
+    animation: none !important;
+  }
+
+  html.high-contrast.dark .gold-gradient-text,
+  html.high-contrast.dark .navy-gradient-text,
+  html.high-contrast.dark .gold-shimmer-text {
+    color: var(--gold) !important;
+    -webkit-text-fill-color: var(--gold) !important;
+  }
+
+  html.high-contrast a {
+    color: var(--foreground);
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 2px;
+  }
+
+  html.high-contrast.dark a {
+    color: var(--gold);
+  }
+
+  html.high-contrast button,
+  html.high-contrast [role="button"] {
+    border: 2px solid var(--border) !important;
+  }
+
+  html.high-contrast input,
+  html.high-contrast select,
+  html.high-contrast textarea {
+    border: 2px solid var(--border) !important;
+    background: var(--background) !important;
+    color: var(--foreground) !important;
+  }
+
+  html.high-contrast img {
+    opacity: 1 !important;
+  }
+
+  html.high-contrast :focus-visible {
+    outline: 3px solid var(--ring) !important;
+    outline-offset: 2px !important;
+  }
 
   /* Contact form — readable topic dropdown in dark mode */
   .dark .contact-topic-select option {
@@ -475,3 +583,75 @@
    - MobileMotionFix.tsx (overrides framer-motion inline opacity:0)
    - useTouchDevice + initial={false} on all landing components
    Do NOT add @media + class-selector combos here — Turbopack rejects them. */
+
+/* ── High contrast (global overrides — outside @layer for max specificity) ── */
+html.high-contrast,
+html.high-contrast body {
+  background-color: var(--background) !important;
+  color: var(--foreground) !important;
+}
+
+html.high-contrast .hero-decorative-bg,
+html.high-contrast canvas,
+html.high-contrast .animate-ken-burns {
+  display: none !important;
+}
+
+html.high-contrast section[aria-label="Hero section"] {
+  background-color: var(--background) !important;
+}
+
+html.high-contrast .text-white,
+html.high-contrast .text-white\/70,
+html.high-contrast .text-white\/80,
+html.high-contrast .text-white\/90 {
+  color: var(--foreground) !important;
+}
+
+html.high-contrast .text-muted-foreground {
+  color: var(--muted-foreground) !important;
+}
+
+html.high-contrast .gold-gradient {
+  background: var(--foreground) !important;
+  color: var(--background) !important;
+}
+
+html.high-contrast.dark .gold-gradient {
+  background: var(--gold) !important;
+  color: #000000 !important;
+}
+
+html.high-contrast [style*="background"] {
+  background-image: none !important;
+}
+
+html.high-contrast section[aria-label="Hero section"] [style*="background"] {
+  background: transparent !important;
+}
+
+html.high-contrast section[aria-label="Hero section"] [style*="color"] {
+  color: var(--foreground) !important;
+}
+
+html.high-contrast section[aria-label="Hero section"] [style*="border"] {
+  border-color: var(--border) !important;
+}
+
+html.high-contrast #accessibility-panel {
+  background-color: var(--card) !important;
+  color: var(--card-foreground) !important;
+  border: 2px solid var(--border) !important;
+}
+
+html.high-contrast #accessibility-panel * {
+  color: inherit;
+}
+
+html.high-contrast #accessibility-panel .text-muted-foreground {
+  color: var(--muted-foreground) !important;
+}
+
+html.high-contrast #accessibility-panel .text-gold {
+  color: var(--gold) !important;
+}
