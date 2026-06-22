@@ -11,6 +11,11 @@ export interface LessonProgress {
   /** null until the quiz is submitted */
   quizScore: number | null;
   quizSubmitted: boolean;
+  /**
+   * True once the student has passed the quiz (score >= 60%).
+   * Persists across retakes so we never double-count in global progress stats.
+   */
+  quizPassed: boolean;
   assignmentText: string;
   assignmentSubmitted: boolean;
   /** 0‑100 */
@@ -60,6 +65,7 @@ export function saveProgress(
     quizAnswers: {},
     quizScore: null,
     quizSubmitted: false,
+    quizPassed: false,
     assignmentText: "",
     assignmentSubmitted: false,
     progress: 10,

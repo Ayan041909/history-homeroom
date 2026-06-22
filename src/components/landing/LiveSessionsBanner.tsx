@@ -33,31 +33,35 @@ export function LiveSessionsBanner() {
   const session = LIVE_SESSIONS[idx];
 
   return (
-    <section className="px-4 sm:px-6 -mt-1" aria-label="Live sessions banner">
-      <div className="max-w-6xl mx-auto">
+    <section
+      className="relative z-20 shrink-0 px-4 sm:px-6 py-4 sm:py-5 -mt-10 sm:-mt-12 overflow-visible"
+      aria-label="Live sessions banner"
+    >
+      <div className="max-w-6xl mx-auto overflow-visible">
         <Link
           href={sessionHref}
-          className="group flex flex-wrap items-center gap-3 sm:gap-4 px-5 py-3 rounded-2xl transition-all glass-gold border border-gold/25 hover:border-gold/45"
+          className="group flex flex-wrap items-center gap-3 sm:gap-4 px-5 py-3.5 rounded-2xl transition-all glass-gold border border-gold/25 hover:border-gold/45 overflow-visible"
           aria-label={signedIn ? "Join live session — open your dashboard" : "Join live session — sign up or sign in to open your dashboard"}
         >
           <span
-            className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-red-500/10 text-red-500 text-[11px] font-bold uppercase tracking-wider relative"
+            className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-red-500/10 text-red-500 text-[11px] font-bold uppercase tracking-wider relative overflow-visible"
           >
             <Radio size={11} aria-hidden="true" />
-            <span className="absolute -left-1 -top-1 w-2 h-2 rounded-full bg-red-500 animate-ping" aria-hidden="true" />
+            <span className="absolute left-0 top-0 w-2 h-2 rounded-full bg-red-500 animate-ping" aria-hidden="true" />
             Live now
           </span>
 
-          <div className="flex-1 min-w-0">
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={idx}
-                initial={{ opacity: 0, y: 8 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -8 }}
-                transition={{ duration: 0.3 }}
-                className="flex flex-wrap items-center gap-x-2 gap-y-1 sm:gap-4 text-sm min-w-0"
-              >
+          <div className="flex-1 min-w-0 overflow-visible">
+            <div className="relative min-h-[1.75rem] overflow-visible">
+              <AnimatePresence mode="wait" initial={false}>
+                <motion.div
+                  key={idx}
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -8 }}
+                  transition={{ duration: 0.3 }}
+                  className="flex flex-wrap items-center gap-x-2 gap-y-1 sm:gap-4 text-sm min-w-0"
+                >
                 <span className="font-semibold text-foreground truncate max-w-full sm:max-w-none">{session.title}</span>
                 <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-green-500/10 text-green-600 dark:text-green-400 text-[11px] font-bold shrink-0">
                   <Users size={10} aria-hidden="true" /> {session.spots} spot{session.spots > 1 ? "s" : ""} left
@@ -81,8 +85,9 @@ export function LiveSessionsBanner() {
                 <span className="hidden md:inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-gold/10 text-gold text-[11px] font-bold shrink-0">
                   {session.type}
                 </span>
-              </motion.div>
-            </AnimatePresence>
+                </motion.div>
+              </AnimatePresence>
+            </div>
           </div>
 
           <span className="flex items-center gap-1 text-xs font-bold text-gold whitespace-nowrap">

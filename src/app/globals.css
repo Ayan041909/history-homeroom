@@ -456,6 +456,12 @@
     text-decoration-thickness: 2px;
   }
   html.high-contrast :focus-visible { outline: 3px solid var(--gold) !important; outline-offset: 2px !important; }
+
+  /* Contact form — readable topic dropdown in dark mode */
+  .dark .contact-topic-select option {
+    background-color: #000;
+    color: #fff;
+  }
 }
 
 /* Particle canvas */

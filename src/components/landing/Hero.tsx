@@ -11,7 +11,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { useTouchDevice } from "@/hooks/useTouchDevice";
 import { getStartLearningHref } from "@/lib/redirect";
 
-const SLOGAN_WORDS = ["History", "Doesn't", "Repeat", "—", "But", "You", "Can", "Learn", "From", "It."];
+const SLOGAN_WORDS = ["History", "Repeats", "Itself", "—", "Until", "You", "Learn", "From", "It."];
 const TAGLINE = "Immersive lessons · Expert tutors · Live sessions";
 
 function ParticleCanvas({ isDark, enabled }: { isDark: boolean; enabled: boolean }) {
@@ -133,12 +133,12 @@ export function Hero() {
 
   return (
     <section
-      className="relative min-h-[100dvh] flex items-center justify-center overflow-hidden pt-16 pb-20"
+      className="relative min-h-[100dvh] flex items-center justify-center pt-16 pb-24 sm:pb-28"
       onMouseMove={handleMouseMove}
       aria-label="Hero section"
     >
       {/* Background layers — decorative only, never intercept touches */}
-      <div className="absolute inset-0 z-0 pointer-events-none" aria-hidden="true">
+      <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden" aria-hidden="true">
         {isDark ? (
           <>
             <ExternalImage
@@ -198,7 +198,7 @@ export function Hero() {
                 className={`inline-block mr-[0.22em] ${
                   word === "—"
                     ? (isDark ? "text-amber-400" : "text-gold")
-                    : i >= 7
+                    : i >= 6
                     ? "gold-shimmer-text"
                     : (isDark ? "text-white" : "text-foreground")
                 }`}

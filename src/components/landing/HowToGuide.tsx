@@ -63,12 +63,9 @@ export function HowToGuide() {
           </p>
         </motion.div>
 
-        {/* Steps */}
+        {/* Steps — line segments run only between center dots, not through text */}
         <div className="relative">
-          {/* Connecting line */}
-          <div className="hidden lg:block absolute left-1/2 top-0 bottom-0 w-0.5 bg-gradient-to-b from-gold/30 via-gold/20 to-transparent -translate-x-1/2" aria-hidden="true" />
-
-          <div className="space-y-10 lg:space-y-12">
+          <div className="space-y-10 lg:space-y-0">
             {STEPS.map((step, i) => (
               <motion.div
                 key={step.step}
@@ -76,11 +73,11 @@ export function HowToGuide() {
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true, amount: 0 }}
                 transition={{ duration: 0.6, delay: 0.1 }}
-                className={`flex flex-col lg:flex-row items-center gap-6 ${i % 2 === 1 ? "lg:flex-row-reverse" : ""}`}
+                className={`flex flex-col lg:flex-row items-center gap-6 relative z-10 ${i % 2 === 1 ? "lg:flex-row-reverse" : ""}`}
               >
                 {/* Content */}
                 <div className="flex-1 w-full">
-                  <div className={`p-6 rounded-2xl glass hover:border-gold/30 hover:shadow-lg hover:shadow-gold/5 transition-all duration-300 ${i % 2 === 1 ? "lg:text-right" : ""}`}>
+                  <div className={`p-6 rounded-2xl bg-card border border-border/60 shadow-sm hover:border-gold/30 hover:shadow-lg hover:shadow-gold/5 transition-all duration-300 ${i % 2 === 1 ? "lg:text-right" : ""}`}>
                     <div className={`flex items-center gap-3 mb-3 ${i % 2 === 1 ? "lg:justify-end" : ""}`}>
                       <div className={`w-11 h-11 rounded-xl bg-gradient-to-br ${step.color} flex items-center justify-center shadow-lg`}>
                         {step.icon}
@@ -92,9 +89,17 @@ export function HowToGuide() {
                   </div>
                 </div>
 
-                {/* Center dot */}
-                <div className="hidden lg:flex flex-shrink-0 w-12 h-12 rounded-full gold-gradient items-center justify-center shadow-lg shadow-gold/30 z-10" aria-hidden="true">
-                  <span className="font-heading font-black text-white text-sm">{step.step}</span>
+                {/* Center dot + connector */}
+                <div className="hidden lg:flex flex-col items-center flex-shrink-0 z-10">
+                  {i > 0 && (
+                    <div className="w-0.5 h-10 bg-gradient-to-b from-gold/20 to-gold/30" aria-hidden="true" />
+                  )}
+                  <div className="w-12 h-12 rounded-full gold-gradient flex items-center justify-center shadow-lg shadow-gold/30" aria-hidden="true">
+                    <span className="font-heading font-black text-white text-sm">{step.step}</span>
+                  </div>
+                  {i < STEPS.length - 1 && (
+                    <div className="w-0.5 h-10 bg-gradient-to-b from-gold/30 to-gold/20" aria-hidden="true" />
+                  )}
                 </div>
 
                 {/* Spacer */}

@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { BookOpen, Users, Star, Globe, Heart, ArrowRight, Sparkles } from "lucide-react";
+import { BookOpen, Users, Star, Globe, Heart, ArrowRight, Sparkles, Rocket, Library, Telescope } from "lucide-react";
 import Link from "next/link";
 import { ExternalImage } from "@/components/shared/ExternalImage";
 import { IMAGES, getTutorImagePosition } from "@/lib/images";
@@ -35,9 +35,30 @@ const VALUES = [
 ];
 
 const MILESTONES = [
-  { year: "2026", event: "History Homeroom launches — founded by Ayan Gupta, Lakshay Rastogi, and Ashton Andrade to make rigorous, engaging history education accessible to learners everywhere." },
-  { year: "2026", event: "Opening the lesson library and live tutoring: group sessions, 1-on-1s, and peer workshops — with progress tracking and badges from day one." },
-  { year: "Ahead", event: "Building our global community of students, tutors, and history enthusiasts — this is just the beginning of the journey." },
+  {
+    year: "2026",
+    label: "The Beginning",
+    icon: <Rocket size={26} className="text-white" />,
+    color: "from-amber-600 to-yellow-500",
+    glow: "rgba(251,191,36,0.25)",
+    event: "History Homeroom launches — founded by Ayan Gupta, Lakshay Rastogi, and Ashton Andrade with a mission to make rigorous, engaging history education accessible to every learner.",
+  },
+  {
+    year: "2026",
+    label: "Platform Live",
+    icon: <Library size={26} className="text-white" />,
+    color: "from-orange-600 to-amber-500",
+    glow: "rgba(234,88,12,0.20)",
+    event: "200+ lessons, live group sessions, 1-on-1 tutoring, and peer workshops go live — with progress tracking, quizzes, badges, and a full curriculum from day one.",
+  },
+  {
+    year: "Ahead",
+    label: "The Horizon",
+    icon: <Telescope size={26} className="text-white" />,
+    color: "from-yellow-500 to-gold",
+    glow: "rgba(184,118,10,0.20)",
+    event: "Expanding our global community of students, tutors, and history enthusiasts across every continent. The greatest chapters of History Homeroom are still to come.",
+  },
 ];
 
 export default function AboutPage() {
@@ -107,25 +128,84 @@ export default function AboutPage() {
       </section>
 
       {/* Timeline */}
-      <section className="py-20 px-4 sm:px-6 bg-card/30 border-y border-border/50">
-        <div className="max-w-3xl mx-auto">
-          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0 }} className="text-center mb-12">
+      <section className="py-24 px-4 sm:px-6 bg-card/30 border-y border-border/50 relative overflow-hidden">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_70%_60%_at_50%_50%,rgba(184,118,10,0.05),transparent)]" aria-hidden="true" />
+        <div className="max-w-5xl mx-auto relative">
+          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0 }} className="text-center mb-16">
             <h2 className="font-heading font-black text-3xl sm:text-4xl mb-3">Our <span className="gold-gradient-text">Journey</span></h2>
+            <p className="text-muted-foreground max-w-md mx-auto text-sm">From a bold idea to a growing educational platform — here&apos;s how we got here.</p>
           </motion.div>
-          <div className="relative">
-            <div className="absolute left-4 sm:left-1/2 top-0 bottom-0 w-0.5 bg-gradient-to-b from-gold/40 to-transparent -translate-x-0.5" aria-hidden="true" />
-            <div className="space-y-8">
-              {MILESTONES.map((m, i) => (
-                <motion.div key={`journey-${i}`} initial={{ opacity: 0, x: i % 2 === 0 ? -20 : 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true, amount: 0 }} transition={{ delay: i * 0.08 }}
-                  className="flex items-start gap-4 pl-10 sm:pl-0">
-                  <div className="absolute left-2 sm:left-1/2 sm:-translate-x-1/2 w-4 h-4 rounded-full gold-gradient shadow-md mt-1 flex-shrink-0" aria-hidden="true" />
-                  <div className={`flex-1 ${i % 2 === 0 ? "sm:pr-8 sm:text-right sm:pl-0" : "sm:pl-8"}`}>
-                    <span className="font-heading font-black text-gold text-lg">{m.year}</span>
-                    <p className="text-sm text-muted-foreground mt-1 leading-relaxed">{m.event}</p>
+
+          {/* Desktop: horizontal stepper */}
+          <div className="hidden md:flex items-start gap-0">
+            {MILESTONES.map((m, i) => (
+              <div key={i} className="flex-1 flex flex-col items-center relative">
+                {/* Connector line between cards */}
+                {i < MILESTONES.length - 1 && (
+                  <div className="absolute top-10 left-1/2 w-full h-0.5 bg-gradient-to-r from-gold/40 to-gold/20 z-0" aria-hidden="true" />
+                )}
+                <motion.div
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0 }}
+                  transition={{ duration: 0.5, delay: i * 0.15 }}
+                  className="flex flex-col items-center w-full px-4"
+                >
+                  {/* Icon circle */}
+                  <div
+                    className={`relative z-10 w-20 h-20 rounded-2xl bg-gradient-to-br ${m.color} flex items-center justify-center shadow-xl mb-5`}
+                    style={{ boxShadow: `0 8px 32px ${m.glow}` }}
+                  >
+                    {m.icon}
+                    <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 px-2.5 py-0.5 rounded-full bg-background border border-gold/30 text-gold text-[11px] font-black whitespace-nowrap">
+                      {m.year}
+                    </div>
+                  </div>
+
+                  {/* Card */}
+                  <div className="w-full rounded-2xl border border-border/60 bg-background/80 backdrop-blur-sm p-5 text-center hover:border-gold/35 hover:shadow-lg hover:shadow-gold/8 transition-all duration-300 mt-2">
+                    <p className="font-heading font-bold text-sm text-gold mb-2 uppercase tracking-wide">{m.label}</p>
+                    <p className="text-sm text-muted-foreground leading-relaxed">{m.event}</p>
                   </div>
                 </motion.div>
-              ))}
-            </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Mobile: vertical cards */}
+          <div className="flex md:hidden flex-col gap-4">
+            {MILESTONES.map((m, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0 }}
+                transition={{ duration: 0.4, delay: i * 0.1 }}
+                className="flex items-start gap-4"
+              >
+                {/* Left: icon + line */}
+                <div className="flex flex-col items-center flex-shrink-0">
+                  <div
+                    className={`w-12 h-12 rounded-xl bg-gradient-to-br ${m.color} flex items-center justify-center shadow-lg flex-shrink-0`}
+                    style={{ boxShadow: `0 4px 20px ${m.glow}` }}
+                  >
+                    {m.icon}
+                  </div>
+                  {i < MILESTONES.length - 1 && (
+                    <div className="w-0.5 flex-1 min-h-6 mt-2 bg-gradient-to-b from-gold/30 to-transparent" aria-hidden="true" />
+                  )}
+                </div>
+
+                {/* Right: content */}
+                <div className="flex-1 pb-2">
+                  <div className="flex items-center gap-2 mb-1">
+                    <span className="font-heading font-black text-gold text-base">{m.year}</span>
+                    <span className="text-xs text-muted-foreground font-medium">· {m.label}</span>
+                  </div>
+                  <p className="text-sm text-muted-foreground leading-relaxed">{m.event}</p>
+                </div>
+              </motion.div>
+            ))}
           </div>
         </div>
       </section>

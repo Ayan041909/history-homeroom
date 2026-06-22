@@ -190,95 +190,98 @@ function FigureModal({
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
         transition={{ duration: 0.2 }}
-        className="fixed inset-0 z-[200] bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto"
+        className="fixed inset-0 z-[200] bg-black/70 backdrop-blur-sm overflow-y-auto"
         onClick={onClose}
         role="dialog"
         aria-modal="true"
         aria-label={`${figure.name} profile`}
       >
-        <motion.div
-          key="content"
-          initial={{ opacity: 0, scale: 0.92, y: 20 }}
-          animate={{ opacity: 1, scale: 1, y: 0 }}
-          exit={{ opacity: 0, scale: 0.95, y: 20 }}
-          transition={{ duration: 0.25, ease: "easeOut" }}
-          className="relative w-full max-w-3xl my-8 rounded-3xl overflow-hidden bg-card border border-gold/30 shadow-2xl shadow-gold/20"
-          onClick={(e) => e.stopPropagation()}
-        >
-          {/* Close button */}
-          <button
-            onClick={onClose}
-            className="absolute top-4 right-4 z-10 w-10 h-10 rounded-full bg-black/50 backdrop-blur text-white hover:bg-black/70 flex items-center justify-center transition-colors focus-visible:ring-2 focus-visible:ring-gold"
-            aria-label="Close profile"
+        {/* Centering wrapper — allows proper scroll on mobile */}
+        <div className="min-h-full flex items-start justify-center p-4 py-6 sm:items-center sm:py-10">
+          <motion.div
+            key="content"
+            initial={{ opacity: 0, scale: 0.92, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.95, y: 20 }}
+            transition={{ duration: 0.25, ease: "easeOut" }}
+            className="relative w-full max-w-3xl rounded-3xl bg-card border border-gold/30 shadow-2xl shadow-gold/20 overflow-hidden flex flex-col"
+            onClick={(e) => e.stopPropagation()}
           >
-            <X size={18} />
-          </button>
-
-          {/* Hero image */}
-          <div className="relative h-64 sm:h-80 overflow-hidden">
-            <ExternalImage
-              src={figure.imageUrl}
-              alt={figure.type === "person" ? `Portrait of ${figure.name}` : `Image of ${figure.name}`}
-              fill
-              className="object-cover"
-              style={{ objectPosition: FIGURE_IMAGE_POSITIONS[figure.id] ?? "50% 50%" }}
-              sizes="(max-width: 768px) 100vw, 768px"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-card via-card/70 to-transparent" />
-            <div className="absolute bottom-4 left-6 right-6">
-              <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full gold-gradient text-white text-[11px] font-bold uppercase tracking-wider mb-2 shadow">
-                {figure.type === "person" ? <User size={11} /> : <MapPin size={11} />}
-                {figure.type === "person" ? "Historical Figure" : "Historical Place"}
-              </div>
-              <h2 className="font-heading font-black text-3xl sm:text-4xl text-foreground leading-tight">
-                {figure.name}
-              </h2>
-              <p className="flex items-center gap-1.5 text-gold text-sm font-medium mt-1">
-                <Calendar size={13} aria-hidden="true" /> {figure.era}
-              </p>
-            </div>
-          </div>
-
-          {/* Body */}
-          <div className="p-6 sm:p-8 space-y-5">
-            <p className="text-foreground/90 leading-relaxed">{figure.description}</p>
-
-            {details && details.highlights.length > 0 && (
-              <div>
-                <h3 className="font-heading font-bold text-sm uppercase tracking-wider text-gold mb-3">
-                  Key Highlights
-                </h3>
-                <ul className="space-y-2.5" role="list">
-                  {details.highlights.map((h, i) => (
-                    <li key={i} className="flex items-start gap-2.5 text-sm">
-                      <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-gold flex-shrink-0" aria-hidden="true" />
-                      <span className="leading-relaxed">{h}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
-
-            {details?.quote && (
-              <blockquote className="rounded-2xl border-l-4 border-gold bg-gold/5 px-5 py-4 italic font-heading text-base sm:text-lg">
-                &ldquo;{details.quote}&rdquo;
-                {details.quoteAuthor && (
-                  <footer className="mt-2 text-xs text-muted-foreground not-italic">
-                    {details.quoteAuthor}
-                  </footer>
-                )}
-              </blockquote>
-            )}
-
-            <a
-              href={`/lessons?search=${encodeURIComponent(figure.name)}`}
-              className="w-full inline-flex items-center justify-center gap-2 py-3.5 rounded-xl gold-gradient text-white font-bold text-sm shadow-lg shadow-gold/20 hover:opacity-90 transition-opacity focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2"
+            {/* Close button — pinned inside modal, above image */}
+            <button
+              onClick={onClose}
+              className="absolute top-4 right-4 z-10 w-10 h-10 rounded-full bg-black/50 backdrop-blur text-white hover:bg-black/70 flex items-center justify-center transition-colors focus-visible:ring-2 focus-visible:ring-gold"
+              aria-label="Close profile"
             >
-              <BookOpen size={15} aria-hidden="true" />
-              Explore lessons featuring {figure.name}
-            </a>
-          </div>
-        </motion.div>
+              <X size={18} />
+            </button>
+
+            {/* Hero image — fixed height, never clips on scroll */}
+            <div className="relative h-52 sm:h-72 flex-shrink-0">
+              <ExternalImage
+                src={figure.imageUrl}
+                alt={figure.type === "person" ? `Portrait of ${figure.name}` : `Image of ${figure.name}`}
+                fill
+                className="object-cover"
+                style={{ objectPosition: FIGURE_IMAGE_POSITIONS[figure.id] ?? "50% 30%" }}
+                sizes="(max-width: 768px) 100vw, 768px"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-card via-card/60 to-transparent" />
+              <div className="absolute bottom-4 left-6 right-14">
+                <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full gold-gradient text-white text-[11px] font-bold uppercase tracking-wider mb-2 shadow">
+                  {figure.type === "person" ? <User size={11} /> : <MapPin size={11} />}
+                  {figure.type === "person" ? "Historical Figure" : "Historical Place"}
+                </div>
+                <h2 className="font-heading font-black text-2xl sm:text-4xl text-foreground leading-tight">
+                  {figure.name}
+                </h2>
+                <p className="flex items-center gap-1.5 text-gold text-sm font-medium mt-1">
+                  <Calendar size={13} aria-hidden="true" /> {figure.era}
+                </p>
+              </div>
+            </div>
+
+            {/* Body — scrolls naturally as part of the page on mobile */}
+            <div className="p-6 sm:p-8 space-y-5">
+              <p className="text-foreground/90 leading-relaxed">{figure.description}</p>
+
+              {details && details.highlights.length > 0 && (
+                <div>
+                  <h3 className="font-heading font-bold text-sm uppercase tracking-wider text-gold mb-3">
+                    Key Highlights
+                  </h3>
+                  <ul className="space-y-2.5" role="list">
+                    {details.highlights.map((h, i) => (
+                      <li key={i} className="flex items-start gap-2.5 text-sm">
+                        <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-gold flex-shrink-0" aria-hidden="true" />
+                        <span className="leading-relaxed">{h}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
+              {details?.quote && (
+                <blockquote className="rounded-2xl border-l-4 border-gold bg-gold/5 px-5 py-4 italic font-heading text-base sm:text-lg">
+                  &ldquo;{details.quote}&rdquo;
+                  {details.quoteAuthor && (
+                    <footer className="mt-2 text-xs text-muted-foreground not-italic">
+                      {details.quoteAuthor}
+                    </footer>
+                  )}
+                </blockquote>
+              )}
+
+              <a
+                href={`/lessons?search=${encodeURIComponent(figure.name)}`}
+                className="w-full inline-flex items-center justify-center gap-2 py-3.5 rounded-xl gold-gradient text-white font-bold text-sm shadow-lg shadow-gold/20 hover:opacity-90 transition-opacity focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2"
+              >
+                <BookOpen size={15} aria-hidden="true" />
+                Explore lessons featuring {figure.name}
+              </a>
+            </div>
+          </motion.div>
+        </div>
       </motion.div>
     </AnimatePresence>
   );

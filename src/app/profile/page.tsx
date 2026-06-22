@@ -16,7 +16,9 @@ import {
   isOnActiveTrial,
   getSubscriptionRecord,
 } from "@/lib/subscriptionCache";
-import { updateMockSubscriptionFields, updateMockProfileName } from "@/lib/mockAuth";
+import { updateMockSubscriptionFields, updateMockProfileName, updateMockProfileAvatar } from "@/lib/mockAuth";
+import { prepareAvatarDataUrl } from "@/lib/avatarUpload";
+import { UserAvatar } from "@/components/shared/UserAvatar";
 import Link from "next/link";
 
 const NOTIFICATIONS_STORAGE_KEY = "history-homeroom:notifications";
@@ -438,11 +440,25 @@ function ProfilePageInner() {
   };
 
   const handleAvatarClick = () => fileInputRef.current?.click();
-  const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleAvatarChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (!file) return;
-    toast.success("Photo uploaded", `"${file.name}" will appear on your profile shortly.`);
+    if (!file || !profile) return;
     e.target.value = "";
+
+    try {
+      const dataUrl = await prepareAvatarDataUrl(file);
+
+      if (isSupabaseConfigured() && user) {
+        await updateUserProfile(user.id, { avatar: dataUrl });
+      } else {
+        updateMockProfileAvatar(dataUrl);
+      }
+
+      setMockProfile({ ...profile, avatar: dataUrl });
+      toast.success("Photo updated", "Your profile picture has been saved.");
+    } catch (err) {
+      toast.error("Upload failed", err instanceof Error ? err.message : "Could not update your photo.");
+    }
   };
 
   const handleDeleteAccount = () => {
@@ -501,9 +517,7 @@ function ProfilePageInner() {
         <div className="max-w-4xl mx-auto px-4 sm:px-6 py-8">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="flex items-center gap-5">
             <div className="relative">
-              <div className="w-20 h-20 rounded-2xl gold-gradient flex items-center justify-center shadow-xl shadow-gold/25 text-3xl font-heading font-black text-white">
-                {(profile?.name ?? "U")[0].toUpperCase()}
-              </div>
+              <UserAvatar name={profile?.name} avatar={profile?.avatar} size="lg" />
               <button
                 type="button"
                 onClick={handleAvatarClick}

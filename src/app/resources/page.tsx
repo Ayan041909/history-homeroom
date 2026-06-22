@@ -2,61 +2,45 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { FileText, Download, BookOpen, Video, Headphones, Map, Filter, Star, Clock, PlaySquare, Search } from "lucide-react";
+import { FileText, Download, BookOpen, Filter, Star, PlaySquare, Search } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { VideoLibrary } from "@/components/resources/VideoLibrary";
 import { useToast } from "@/components/shared/Toast";
 import { downloadResource } from "@/lib/resourceDownload";
 
-type ResourceType = "all" | "guide" | "video" | "audio" | "map" | "quiz";
+type ResourceType = "all" | "guide";
 
 const RESOURCES = [
-  { id: "1", title: "Complete Guide to Ancient Egypt", type: "guide", subject: "Ancient History", pages: 42, rating: 4.9, downloads: 12400, free: true, description: "A comprehensive PDF covering Egyptian dynasties, culture, religion, and the significance of the Nile." },
-  { id: "2", title: "World War II: Causes & Consequences", type: "guide", subject: "Modern History", pages: 68, rating: 4.8, downloads: 9800, free: false, description: "Deep-dive study guide covering the rise of fascism, major battles, the Holocaust, and post-war restructuring." },
-  { id: "3", title: "The Renaissance Explained", type: "video", subject: "Cultural History", duration: "48 min", rating: 4.9, downloads: 7600, free: true, description: "An engaging video lecture exploring how the Renaissance transformed art, science, and philosophy across Europe." },
-  { id: "4", title: "Ancient Rome: Rise and Fall", type: "video", subject: "Ancient History", duration: "62 min", rating: 4.7, downloads: 11200, free: false, description: "Comprehensive video covering the Roman Republic, Empire, social structures, and the eventual collapse in 476 AD." },
-  { id: "5", title: "The French Revolution Podcast Series", type: "audio", subject: "Modern History", duration: "3h 20min", rating: 4.6, downloads: 5400, free: false, description: "Six-episode audio series narrating the causes, major events, and lasting impact of the French Revolution." },
-  { id: "6", title: "Historical Maps Collection", type: "map", subject: "World History", pages: 30, rating: 4.8, downloads: 8700, free: true, description: "30 high-resolution historical maps tracing empire borders, trade routes, and migration patterns from 3000 BC to 1900 AD." },
-  { id: "7", title: "American Revolution Study Pack", type: "guide", subject: "Modern History", pages: 55, rating: 4.9, downloads: 14100, free: false, description: "Complete study pack including timelines, key figures, battle maps, and primary source documents from the revolutionary period." },
-  { id: "8", title: "Quiz Bank: Ancient Civilizations", type: "quiz", subject: "Ancient History", questions: 200, rating: 4.7, downloads: 6300, free: false, description: "200 curated quiz questions covering Egypt, Greece, Rome, Mesopotamia, and the Indus Valley — perfect for exam prep." },
-  { id: "9", title: "The Silk Road: Trade & Culture", type: "map", subject: "World History", pages: 15, rating: 4.5, downloads: 4200, free: true, description: "Illustrated maps and commentary on the ancient Silk Road trade network, its routes, goods exchanged, and cultural impact." },
-  { id: "10", title: "Cold War: Flashpoints & Crises", type: "video", subject: "Modern History", duration: "55 min", rating: 4.8, downloads: 8100, free: false, description: "Video lecture analyzing the key Cold War flashpoints including Korea, Cuba, Vietnam, and the arms race." },
-  { id: "11", title: "Medieval Europe Audio Guide", type: "audio", subject: "Medieval History", duration: "2h 10min", rating: 4.6, downloads: 3900, free: false, description: "Narrated audio tour of medieval European society, feudalism, the Church's power, and the Crusades." },
-  { id: "12", title: "Quick Quiz: Modern World History", type: "quiz", subject: "Modern History", questions: 100, rating: 4.7, downloads: 5500, free: true, description: "100 review questions spanning industrialization, World Wars, decolonization, and Cold War — great for quick revision." },
+  { id: "1",  title: "Complete Guide to Ancient Egypt",       subject: "Ancient History",   rating: 4.9, downloads: 12400, free: true,  description: "A comprehensive study guide covering Egyptian dynasties, culture, religion, the pharaohs, and the significance of the Nile." },
+  { id: "2",  title: "World War II: Causes & Consequences",   subject: "Modern History",    rating: 4.8, downloads: 9800,  free: false, description: "Deep-dive study guide covering the rise of fascism, major battles, the Holocaust, and post-war restructuring." },
+  { id: "3",  title: "The Renaissance Explained",             subject: "Cultural History",  rating: 4.9, downloads: 7600,  free: true,  description: "Detailed study guide exploring how the Renaissance transformed art, science, philosophy, and politics across Europe." },
+  { id: "4",  title: "Ancient Rome: Rise and Fall",           subject: "Ancient History",   rating: 4.7, downloads: 11200, free: false, description: "Comprehensive guide covering the Roman Republic, the Empire, social structures, key emperors, and the eventual collapse in 476 AD." },
+  { id: "5",  title: "The French Revolution",                 subject: "Modern History",    rating: 4.6, downloads: 5400,  free: false, description: "Study guide narrating the causes, major events, key figures, and lasting impact of the French Revolution from 1789 to Napoleon." },
+  { id: "6",  title: "Historical Maps & Empires",             subject: "World History",     rating: 4.8, downloads: 8700,  free: true,  description: "Annotated guide tracing empire borders, trade routes, and migration patterns across 5,000 years of world history." },
+  { id: "7",  title: "The American Revolution",               subject: "Modern History",    rating: 4.9, downloads: 14100, free: false, description: "Complete study guide including timelines, key figures, battle summaries, and primary source documents from the revolutionary period." },
+  { id: "8",  title: "Ancient Civilizations: Egypt to Rome",  subject: "Ancient History",   rating: 4.7, downloads: 6300,  free: false, description: "Study guide with key facts, timelines, and review questions covering Egypt, Greece, Rome, Mesopotamia, and the Indus Valley." },
+  { id: "9",  title: "The Silk Road: Trade & Culture",        subject: "World History",     rating: 4.5, downloads: 4200,  free: true,  description: "Study guide on the ancient Silk Road trade network — its routes, goods exchanged, spread of religion, and cultural impact." },
+  { id: "10", title: "Cold War: Flashpoints & Crises",        subject: "Modern History",    rating: 4.8, downloads: 8100,  free: false, description: "Comprehensive study guide analyzing key Cold War flashpoints including Korea, the Cuban Missile Crisis, Vietnam, and the arms race." },
+  { id: "11", title: "Medieval Europe",                       subject: "Medieval History",  rating: 4.6, downloads: 3900,  free: false, description: "Study guide covering medieval European society, feudalism, the Church's power, the Crusades, and the Black Death." },
+  { id: "12", title: "Modern World History Review",           subject: "Modern History",    rating: 4.7, downloads: 5500,  free: true,  description: "Review guide spanning industrialization, the World Wars, decolonization, and the Cold War — ideal for exam preparation." },
 ];
 
-const TYPE_ICONS: Record<string, React.ReactNode> = {
-  guide: <FileText size={16} />,
-  video: <Video size={16} />,
-  audio: <Headphones size={16} />,
-  map: <Map size={16} />,
-  quiz: <BookOpen size={16} />,
-};
-
-const TYPE_LABELS: Record<string, string> = {
-  guide: "Study Guide",
-  video: "Video Lecture",
-  audio: "Audio Series",
-  map: "Historical Map",
-  quiz: "Quiz Bank",
-};
 
 const SUBJECTS = ["All Subjects", "Ancient History", "Medieval History", "Modern History", "Cultural History", "World History"];
 
 export default function ResourcesPage() {
-  const [type, setType] = useState<ResourceType>("all");
   const [subject, setSubject] = useState("All Subjects");
   const [search, setSearch] = useState("");
   const [freeOnly, setFreeOnly] = useState(false);
   const toast = useToast();
 
-  const handleResourceAction = (resource: { id: string; title: string; type: string; subject: string; free: boolean }) => {
+  const handleResourceAction = (resource: { id: string; title: string; subject: string; free: boolean }) => {
     if (!resource.free) {
       toast.info("Plus required", `Unlock "${resource.title}" with a 1-week free trial of Plus.`);
       return;
     }
     try {
-      downloadResource(resource);
+      downloadResource({ ...resource, type: "guide" });
       toast.success("Download started", `"${resource.title}" is downloading to your device.`);
     } catch {
       toast.info("Download unavailable", "Please try again or contact support.");
@@ -64,7 +48,6 @@ export default function ResourcesPage() {
   };
 
   const filtered = RESOURCES.filter((r) => {
-    if (type !== "all" && r.type !== type) return false;
     if (subject !== "All Subjects" && r.subject !== subject) return false;
     if (freeOnly && !r.free) return false;
     if (search && !r.title.toLowerCase().includes(search.toLowerCase()) && !r.subject.toLowerCase().includes(search.toLowerCase())) return false;
@@ -129,20 +112,6 @@ export default function ResourcesPage() {
             </div>
             {/* Filters */}
             <div className="flex flex-wrap items-center gap-3 mb-8">
-              {/* Type filter */}
-              <div className="flex flex-wrap gap-2">
-                {([["all", "All Types"], ["guide", "Guides"], ["video", "Videos"], ["audio", "Audio"], ["map", "Maps"], ["quiz", "Quizzes"]] as [ResourceType, string][]).map(([val, label]) => (
-                  <button key={val} onClick={() => setType(val)}
-                    className={`px-3 py-1.5 rounded-xl text-sm font-medium transition-all focus-visible:ring-2 focus-visible:ring-gold ${
-                      type === val ? "gold-gradient text-white shadow" : "border border-border text-muted-foreground hover:border-gold/40 hover:text-foreground"
-                    }`}>
-                    {label}
-                  </button>
-                ))}
-              </div>
-
-              <div className="h-6 w-px bg-border hidden sm:block" />
-
               {/* Subject filter */}
               <select value={subject} onChange={(e) => setSubject(e.target.value)}
                 className="px-3 py-1.5 rounded-xl text-sm border border-border bg-background focus:border-gold/60 focus:outline-none transition-colors">
@@ -157,7 +126,7 @@ export default function ResourcesPage() {
                 <Filter size={13} /> Free Only
               </button>
 
-              <span className="text-xs text-muted-foreground ml-auto">{filtered.length} resource{filtered.length !== 1 ? "s" : ""}</span>
+              <span className="text-xs text-muted-foreground ml-auto">{filtered.length} guide{filtered.length !== 1 ? "s" : ""}</span>
             </div>
 
             {/* Grid */}
@@ -176,8 +145,8 @@ export default function ResourcesPage() {
                   >
                     <div className="flex items-start justify-between mb-3">
                       <div className="flex items-center gap-2 px-2.5 py-1 rounded-lg bg-gold/10 text-gold text-xs font-medium">
-                        {TYPE_ICONS[resource.type]}
-                        {TYPE_LABELS[resource.type]}
+                        <FileText size={14} />
+                        Study Guide
                       </div>
                       {resource.free
                         ? <span className="px-2 py-0.5 rounded-lg bg-green-500/10 text-green-500 text-xs font-bold">FREE</span>
@@ -190,9 +159,6 @@ export default function ResourcesPage() {
 
                     <div className="flex items-center justify-between text-xs text-muted-foreground mb-4">
                       <span className="flex items-center gap-1"><Star size={11} className="text-gold" /> {resource.rating}</span>
-                      <span className="flex items-center gap-1"><Clock size={11} />
-                        {"pages" in resource ? `${resource.pages} pages` : "duration" in resource ? resource.duration : `${resource.questions} questions`}
-                      </span>
                       <span className="flex items-center gap-1"><Download size={11} /> {resource.downloads.toLocaleString()}</span>
                     </div>
 
@@ -204,7 +170,7 @@ export default function ResourcesPage() {
                           ? "gold-gradient text-white hover:opacity-90 shadow"
                           : "border border-gold/40 text-gold hover:bg-gold/8"
                       }`}
-                      aria-label={resource.free ? `Download ${resource.title}` : `Unlock ${resource.title} with Plus`}
+                      aria-label={resource.free ? `Download ${resource.title} study guide` : `Unlock ${resource.title} with Plus`}
                     >
                       <Download size={13} />
                       {resource.free ? "Download Free" : "Unlock with Plus"}

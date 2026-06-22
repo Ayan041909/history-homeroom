@@ -13,8 +13,10 @@ import { NewsletterCTA } from "@/components/landing/NewsletterCTA";
 export default function LandingPage() {
   return (
     <>
-      <Hero />
-      <LiveSessionsBanner />
+      <div className="relative isolate">
+        <Hero />
+        <LiveSessionsBanner />
+      </div>
       <MetricsCounter />
       <EventsCarousel />
       <HistoricalPreviews />

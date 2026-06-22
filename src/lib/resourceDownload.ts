@@ -197,7 +197,7 @@ const CONTENT: Record<string, { body: string; filename: string; typeLabel: strin
 
   // ── 3. The Renaissance Explained (video → lecture notes) ─────────────────
   "3": {
-    typeLabel: "Video Lecture Notes",
+    typeLabel: "Study Guide (PDF)",
     filename: "renaissance-explained-lecture-notes.html",
     body: `
 <p style="background:#fdf6e8;border:1px solid #e8dcc8;border-radius:6px;padding:12px 16px;font-size:13px;color:#666;margin-bottom:8px">
@@ -267,7 +267,7 @@ const CONTENT: Record<string, { body: string; filename: string; typeLabel: strin
 
   // ── 4. Ancient Rome: Rise and Fall (video → lecture notes) ───────────────
   "4": {
-    typeLabel: "Video Lecture Notes",
+    typeLabel: "Study Guide (PDF)",
     filename: "ancient-rome-rise-and-fall-lecture-notes.html",
     body: `
 <p style="background:#fdf6e8;border:1px solid #e8dcc8;border-radius:6px;padding:12px 16px;font-size:13px;color:#666;margin-bottom:8px">
@@ -351,7 +351,7 @@ const CONTENT: Record<string, { body: string; filename: string; typeLabel: strin
 
   // ── 5. French Revolution Podcast Series (audio → transcript) ─────────────
   "5": {
-    typeLabel: "Podcast Transcript",
+    typeLabel: "Study Guide (PDF)",
     filename: "french-revolution-podcast-transcript.html",
     body: `
 <p style="background:#fdf6e8;border:1px solid #e8dcc8;border-radius:6px;padding:12px 16px;font-size:13px;color:#666;margin-bottom:8px">
@@ -402,7 +402,7 @@ const CONTENT: Record<string, { body: string; filename: string; typeLabel: strin
 
   // ── 6. Historical Maps Collection ────────────────────────────────────────
   "6": {
-    typeLabel: "Historical Maps",
+    typeLabel: "Study Guide (PDF)",
     filename: "historical-maps-collection.html",
     body: `
 <p style="background:#fdf6e8;border:1px solid #e8dcc8;border-radius:6px;padding:12px 16px;font-size:13px;color:#666;margin-bottom:8px">
@@ -483,7 +483,7 @@ const CONTENT: Record<string, { body: string; filename: string; typeLabel: strin
 
   // ── 7. American Revolution Study Pack ────────────────────────────────────
   "7": {
-    typeLabel: "Study Pack (PDF)",
+    typeLabel: "Study Guide (PDF)",
     filename: "american-revolution-study-pack.html",
     body: `
 <h2>Overview</h2>
@@ -557,7 +557,7 @@ const CONTENT: Record<string, { body: string; filename: string; typeLabel: strin
 
   // ── 8. Quiz Bank: Ancient Civilizations ──────────────────────────────────
   "8": {
-    typeLabel: "Quiz Bank",
+    typeLabel: "Study Guide (PDF)",
     filename: "quiz-bank-ancient-civilizations.html",
     body: `
 <p style="background:#fdf6e8;border:1px solid #e8dcc8;border-radius:6px;padding:12px 16px;font-size:13px;color:#666;margin-bottom:8px">
@@ -629,7 +629,7 @@ const CONTENT: Record<string, { body: string; filename: string; typeLabel: strin
 
   // ── 9. The Silk Road: Trade & Culture ────────────────────────────────────
   "9": {
-    typeLabel: "Illustrated Map Guide",
+    typeLabel: "Study Guide (PDF)",
     filename: "silk-road-maps-and-commentary.html",
     body: `
 <h2>Introduction</h2>
@@ -701,7 +701,7 @@ const CONTENT: Record<string, { body: string; filename: string; typeLabel: strin
 
   // ── 10. Cold War: Flashpoints & Crises ───────────────────────────────────
   "10": {
-    typeLabel: "Video Lecture Notes",
+    typeLabel: "Study Guide (PDF)",
     filename: "cold-war-flashpoints-lecture-notes.html",
     body: `
 <p style="background:#fdf6e8;border:1px solid #e8dcc8;border-radius:6px;padding:12px 16px;font-size:13px;color:#666;margin-bottom:8px">
@@ -757,7 +757,7 @@ const CONTENT: Record<string, { body: string; filename: string; typeLabel: strin
 
   // ── 11. Medieval Europe Audio Guide ──────────────────────────────────────
   "11": {
-    typeLabel: "Audio Transcript",
+    typeLabel: "Study Guide (PDF)",
     filename: "medieval-europe-audio-guide-transcript.html",
     body: `
 <p style="background:#fdf6e8;border:1px solid #e8dcc8;border-radius:6px;padding:12px 16px;font-size:13px;color:#666;margin-bottom:8px">
@@ -827,7 +827,7 @@ const CONTENT: Record<string, { body: string; filename: string; typeLabel: strin
 
   // ── 12. Quick Quiz: Modern World History ─────────────────────────────────
   "12": {
-    typeLabel: "Quiz Bank",
+    typeLabel: "Study Guide (PDF)",
     filename: "quiz-modern-world-history.html",
     body: `
 <p style="background:#fdf6e8;border:1px solid #e8dcc8;border-radius:6px;padding:12px 16px;font-size:13px;color:#666;margin-bottom:8px">

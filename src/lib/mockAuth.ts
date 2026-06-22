@@ -119,3 +119,17 @@ export function updateMockProfileName(name: string): UserProfile {
   saveUsers(users);
   return stripPassword(users[uid]);
 }
+
+/** Updates the avatar for the currently signed-in mock user. */
+export function updateMockProfileAvatar(avatar: string): UserProfile {
+  const uid = localStorage.getItem(SESSION_KEY);
+  if (!uid) throw new Error("You must be signed in to update your profile.");
+
+  const users = getUsers();
+  const user = users[uid];
+  if (!user) throw new Error("You must be signed in to update your profile.");
+
+  users[uid] = { ...user, avatar };
+  saveUsers(users);
+  return stripPassword(users[uid]);
+}

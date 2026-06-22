@@ -10,6 +10,7 @@ import { ThemeToggle } from "./ThemeToggle";
 import { SiteLogo } from "./SiteLogo";
 import { useAuth } from "@/hooks/useAuth";
 import { useTouchDevice } from "@/hooks/useTouchDevice";
+import { UserAvatar } from "@/components/shared/UserAvatar";
 type NavItem = {
   label: string;
   href?: string;
@@ -197,9 +198,7 @@ export function Navbar() {
           {profile ? (
             <div className="hidden md:flex items-center gap-2">
               <Link href="/profile" className={authLinkClass}>
-                <div className="w-6 h-6 rounded-full gold-gradient flex items-center justify-center text-white text-xs font-bold">
-                  {(profile.name ?? "U")[0].toUpperCase()}
-                </div>
+                <UserAvatar name={profile.name} avatar={profile.avatar} size="sm" />
                 {profile.name?.split(" ")[0]}
               </Link>
               <Link href="/home" className={authActionClass}>
@@ -264,7 +263,7 @@ export function Navbar() {
               {profile ? (
                 <>
                   <Link href="/profile" className="flex items-center gap-2 px-4 py-3 rounded-lg text-sm font-medium hover:bg-gold/10 transition-colors">
-                    <div className="w-6 h-6 rounded-full gold-gradient flex items-center justify-center text-white text-xs font-bold">{(profile.name ?? "U")[0].toUpperCase()}</div>
+                    <UserAvatar name={profile.name} avatar={profile.avatar} size="sm" />
                     {profile.name}
                   </Link>
                   <Link href="/home" className="flex items-center gap-2 px-4 py-3 rounded-lg text-sm font-medium hover:bg-gold/10 transition-colors">

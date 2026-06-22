@@ -1,5 +1,8 @@
 [build]
   command = "npm run build"
+  # Skip automatic builds on git push unless NETLIFY_DEPLOY_APPROVED=true
+  # is set in Netlify → Site configuration → Environment variables.
+  ignore = "node scripts/check-deploy-approved.mjs"
 
 [[plugins]]
   package = "@netlify/plugin-nextjs"

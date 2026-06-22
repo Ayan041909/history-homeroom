@@ -5,18 +5,59 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Mail, MessageSquare, Phone, MapPin, Send, Check, Clock, Headphones } from "lucide-react";
 
 const TOPICS = ["General Question", "Billing & Payments", "Technical Support", "Tutoring Inquiry", "Partnership / Press", "Report an Issue", "Other"];
+const WEB3FORMS_URL = "https://api.web3forms.com/submit";
+const ACCESS_KEY = process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY ?? "";
 
 export default function ContactPage() {
   const [form, setForm] = useState({ name: "", email: "", topic: TOPICS[0], message: "" });
   const [sending, setSending] = useState(false);
   const [sent, setSent] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSending(true);
-    await new Promise((r) => setTimeout(r, 1800));
-    setSending(false);
-    setSent(true);
+    setError(null);
+
+    if (!ACCESS_KEY) {
+      setError("Contact form is not configured yet. Please email support@historyhomeroom.org directly.");
+      setSending(false);
+      return;
+    }
+
+    try {
+      const res = await fetch(WEB3FORMS_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify({
+          access_key: ACCESS_KEY,
+          subject: form.topic,
+          from_name: "History Homeroom Contact",
+          name: form.name.trim(),
+          email: form.email.trim(),
+          message: [
+            "New contact form submission",
+            "",
+            `Name: ${form.name.trim()}`,
+            `Email: ${form.email.trim()}`,
+            `Topic: ${form.topic}`,
+            "",
+            "Message:",
+            form.message.trim(),
+          ].join("\n"),
+          botcheck: false,
+        }),
+      });
+      const data = (await res.json()) as { success?: boolean; message?: string };
+      if (!data.success) {
+        throw new Error(data.message ?? "Could not send your message.");
+      }
+      setSent(true);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Could not send your message.");
+    } finally {
+      setSending(false);
+    }
   };
 
   return (
@@ -89,6 +130,12 @@ export default function ContactPage() {
                 <motion.form key="form" onSubmit={handleSubmit} initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} className="space-y-4">
                   <h2 className="font-heading font-bold text-2xl mb-2">Send a Message</h2>
 
+                  {error && (
+                    <p className="text-sm text-red-500 bg-red-500/10 border border-red-500/25 rounded-xl px-4 py-3" role="alert">
+                      {error}
+                    </p>
+                  )}
+
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                       <label className="block text-xs font-medium mb-1.5">Your Name *</label>
@@ -104,9 +151,12 @@ export default function ContactPage() {
 
                   <div>
                     <label className="block text-xs font-medium mb-1.5">Topic</label>
-                    <select value={form.topic} onChange={(e) => setForm((f) => ({ ...f, topic: e.target.value }))}
-                      className="w-full px-4 py-3 rounded-xl bg-card border border-border focus:border-gold/60 focus:outline-none text-sm transition-colors">
-                      {TOPICS.map((t) => <option key={t}>{t}</option>)}
+                    <select
+                      value={form.topic}
+                      onChange={(e) => setForm((f) => ({ ...f, topic: e.target.value }))}
+                      className="contact-topic-select w-full px-4 py-3 rounded-xl bg-card border border-border focus:border-gold/60 focus:outline-none text-sm transition-colors"
+                    >
+                      {TOPICS.map((t) => <option key={t} value={t}>{t}</option>)}
                     </select>
                   </div>
 

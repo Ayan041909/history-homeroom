@@ -131,7 +131,7 @@ export function MetricsCounter() {
 
   return (
     <section
-      className="py-16 px-4 sm:px-6 relative overflow-hidden"
+      className="pt-20 sm:pt-24 pb-16 px-4 sm:px-6 relative overflow-x-clip overflow-y-visible"
       aria-label="Platform metrics"
     >
       <div

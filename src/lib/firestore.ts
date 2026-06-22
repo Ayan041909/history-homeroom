@@ -289,7 +289,8 @@ export async function awardBadge(uid: string, badgeId: string) {
     const { data } = await supabase.from("badges").select("earned").eq("user_id", uid).maybeSingle();
     const earned = ((data as BadgesRow | null)?.earned ?? []) as string[];
     if (earned.includes(badgeId)) return;
-    await supabase.from("badges").update({ earned: [...earned, badgeId] }).eq("user_id", uid);
+    // Use upsert so this works even if the badges row is missing (edge case on first login).
+    await supabase.from("badges").upsert({ user_id: uid, earned: [...earned, badgeId] });
   } catch {
     // Ignore when database is unavailable.
   }

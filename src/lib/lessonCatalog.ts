@@ -32,31 +32,28 @@ const SUBJECTS = [
 const LEVELS: LessonLevel[] = ["Beginner", "Intermediate", "Advanced"];
 
 const THUMBNAILS = [
-  IMAGES.lessons.egypt,
-  IMAGES.lessons.romanSenate,
-  IMAGES.lessons.greekDemocracy,
-  IMAGES.lessons.blackDeath,
-  IMAGES.lessons.crusades,
-  IMAGES.lessons.ww1Causes,
-  IMAGES.lessons.holocaust,
-  IMAGES.lessons.decolonization,
-  IMAGES.lessons.daVinci,
-  IMAGES.lessons.silkRoad,
-  IMAGES.lessons.spaceRace,
-  IMAGES.lessons.civilRights,
-  IMAGES.events.pyramids,
-  IMAGES.events.athensDemocracy,
+  IMAGES.places.pyramidsGiza,
   IMAGES.events.fallOfRome,
-  IMAGES.events.magnaCarta,
-  IMAGES.events.renaissance,
-  IMAGES.events.americanRevolution,
-  IMAGES.events.frenchRevolution,
-  IMAGES.events.industrialRevolution,
+  IMAGES.lessons.greekDemocracy,
+  IMAGES.events.islamicGoldenAge,
+  IMAGES.events.columbus,
   IMAGES.events.ww2,
-  IMAGES.events.moonLanding,
-  IMAGES.places.colosseum,
+  IMAGES.figures.napoleon,
+  IMAGES.figures.cleopatra,
   IMAGES.places.greatWall,
   IMAGES.places.machuPicchu,
+  IMAGES.lessons.spaceRace,
+  IMAGES.events.ww1,
+  IMAGES.events.pyramids,
+  IMAGES.lessons.blackDeath,
+  IMAGES.events.americanRevolution,
+  IMAGES.events.frenchRevolution,
+  IMAGES.lessons.crusades,
+  IMAGES.lessons.daVinci,
+  IMAGES.places.colosseum,
+  IMAGES.events.cuneiform,
+  IMAGES.lessons.silkRoad,
+  IMAGES.events.magnaCarta,
 ];
 
 /** Flagship lessons — first 10 free; last 5 are Premium-exclusive. */
@@ -159,6 +156,111 @@ const TOPIC_BANK: Record<(typeof SUBJECTS)[number], string[]> = {
   ],
 };
 
+/**
+ * Maps specific lesson topic titles to their ideal thumbnail images.
+ * Any title listed here will use its dedicated image instead of the
+ * rotating THUMBNAILS fallback.
+ */
+const TOPIC_IMAGE_MAP: Record<string, string> = {
+  // Ancient History
+  "Mesopotamia and the Birth of Writing": IMAGES.lessons.mesopotamia,
+  "Hammurabi's Code and Early Law": IMAGES.lessons.hammurabi,
+  "The Persian Empire at Its Height": IMAGES.lessons.persianEmpire,
+  "Sparta vs. Athens": IMAGES.lessons.spartaAthens,
+  "Alexander the Great's Conquests": IMAGES.lessons.alexanderGreat,
+  "The Punic Wars": IMAGES.lessons.punicWars,
+  "Daily Life in Pompeii": IMAGES.lessons.pompeii,
+  "Cleopatra and the End of Egypt": IMAGES.figures.cleopatra,
+  "The Han Dynasty and Silk Road Origins": IMAGES.lessons.silkRoad,
+  "Maya Civilization and Astronomy": IMAGES.places.machuPicchu,
+  "Aztec Society Before Conquest": IMAGES.places.machuPicchu,
+  "Inca Roads and Administration": IMAGES.places.machuPicchu,
+  "Fall of the Western Roman Empire": IMAGES.events.fallOfRome,
+  "Byzantium: Rome's Eastern Heir": IMAGES.places.colosseum,
+  "Roman Engineering and Aqueducts": IMAGES.places.colosseum,
+  "Sumerian City-States": IMAGES.lessons.mesopotamia,
+  "The Epic of Gilgamesh in Context": IMAGES.lessons.mesopotamia,
+  "Nubia and the Kingdom of Kush": IMAGES.lessons.egypt,
+  "Temple Architecture from Egypt to Greece": IMAGES.lessons.egypt,
+  "Hellenistic Kingdoms After Alexander": IMAGES.lessons.alexanderGreat,
+  "Ancient Olympic Games": IMAGES.lessons.greekDemocracy,
+  "Women in Ancient Athens": IMAGES.lessons.greekDemocracy,
+  "The Library of Alexandria": IMAGES.lessons.greekDemocracy,
+  "Etruscans and the Founding of Rome": IMAGES.lessons.romanSenate,
+  "Roman Republic to Empire Transition": IMAGES.lessons.romanSenate,
+  "Roman Law and the Twelve Tables": IMAGES.lessons.romanSenate,
+  "Gladiators and Roman Entertainment": IMAGES.places.colosseum,
+  "Roman Britain and Hadrian's Wall": IMAGES.places.colosseum,
+  "Carthage and Mediterranean Trade": IMAGES.lessons.punicWars,
+  "Phoenician Traders of the Mediterranean": IMAGES.lessons.silkRoad,
+  // Medieval History
+  "The Mongol Empire Under Genghis Khan": IMAGES.places.greatWall,
+  "Marco Polo's Journey to China": IMAGES.lessons.silkRoad,
+  "Ottoman Rise and Constantinople's Fall": IMAGES.lessons.crusades,
+  "Richard the Lionheart and the Third Crusade": IMAGES.lessons.crusades,
+  "Saladin and the Ayyubid Dynasty": IMAGES.lessons.crusades,
+  "The Children's Crusade": IMAGES.lessons.crusades,
+  "The Teutonic Knights in the Baltic": IMAGES.lessons.crusades,
+  "Medieval Plague and Social Change": IMAGES.lessons.blackDeath,
+  "The Black Death": IMAGES.lessons.blackDeath,
+  "Islamic Golden Age Science": IMAGES.events.islamicGoldenAge,
+  "Al-Andalus: Muslim Spain": IMAGES.events.islamicGoldenAge,
+  "Medieval African Kingdoms: Mali": IMAGES.lessons.decolonization,
+  "Medieval Japan and the Samurai Code": IMAGES.places.greatWall,
+  "The Song Dynasty and Innovation": IMAGES.places.greatWall,
+  "The Norman Conquest of England": IMAGES.events.magnaCarta,
+  "The Great Schism in the Church": IMAGES.events.magnaCarta,
+  "Medieval Universities and Scholasticism": IMAGES.lessons.greekDemocracy,
+  "Gothic Cathedrals and Faith": IMAGES.events.magnaCarta,
+  "Joan of Arc and French Nationhood": IMAGES.events.frenchRevolution,
+  "The Hundred Years' War": IMAGES.events.frenchRevolution,
+  "The Wars of the Roses": IMAGES.events.frenchRevolution,
+  "The Printing Press Revolution": IMAGES.events.cuneiform,
+  "Charlemagne and the Frankish Empire": IMAGES.lessons.crusades,
+  // Modern History
+  "Napoleon's Empire and Legacy": IMAGES.figures.napoleon,
+  "Congress of Vienna and European Order": IMAGES.figures.napoleon,
+  "Russian Revolution of 1917": IMAGES.events.ww1,
+  "World War II: Origins and Blitzkrieg": IMAGES.events.ww2,
+  "The D-Day Landings": IMAGES.events.ww2,
+  "The Atomic Bomb and Its Aftermath": IMAGES.events.ww2,
+  "Stalinism and the Soviet Union": IMAGES.events.ww2,
+  "Mao's China and the Cultural Revolution": IMAGES.places.greatWall,
+  "Korean War and Divided Peninsula": IMAGES.places.greatWall,
+  "Vietnam War in Global Context": IMAGES.events.ww2,
+  "The Cuban Missile Crisis": IMAGES.lessons.spaceRace,
+  "The Cold War Begins": IMAGES.lessons.spaceRace,
+  "The Berlin Wall and German Reunification": IMAGES.lessons.spaceRace,
+  "The Fall of the Soviet Union": IMAGES.lessons.spaceRace,
+  "Apartheid and South African Liberation": IMAGES.lessons.civilRights,
+  "Women's Suffrage Movements": IMAGES.lessons.civilRights,
+  "Nelson Mandela and Reconciliation": IMAGES.lessons.civilRights,
+  "The Scramble for Africa": IMAGES.lessons.decolonization,
+  "Imperialism in India": IMAGES.lessons.decolonization,
+  "Partition of India and Pakistan": IMAGES.lessons.decolonization,
+  "Latin American Independence Movements": IMAGES.events.americanRevolution,
+  "Industrial Revolution in Britain": IMAGES.events.ww1,
+  "Child Labor and Factory Reform": IMAGES.events.ww1,
+  "The Great Depression Worldwide": IMAGES.events.ww1,
+  "The Enlightenment and Reason": IMAGES.events.renaissance,
+  "Meiji Restoration in Japan": IMAGES.places.greatWall,
+  // Cultural History
+  "Impressionism and Modern Art": IMAGES.events.frenchRevolution,
+  "Shakespeare's England": IMAGES.events.magnaCarta,
+  "The Harlem Renaissance": IMAGES.lessons.civilRights,
+  // World History
+  "The Columbian Exchange": IMAGES.events.columbus,
+  "Atlantic Slave Trade and Its Legacies": IMAGES.lessons.civilRights,
+  "Pan-Africanism and Diaspora": IMAGES.lessons.civilRights,
+  "Trans-Saharan Gold and Salt Routes": IMAGES.lessons.silkRoad,
+  "Indian Ocean Trade Network": IMAGES.lessons.silkRoad,
+  "The Opium Wars and China": IMAGES.places.greatWall,
+  "Pandemics Before COVID": IMAGES.lessons.blackDeath,
+  "Comparative Empires: Rome and Han": IMAGES.lessons.romanSenate,
+  "International Space Cooperation": IMAGES.lessons.spaceRace,
+  "Antarctic Exploration History": IMAGES.lessons.spaceRace,
+};
+
 function pseudoRandom(seed: number) {
   const x = Math.sin(seed * 9999) * 10000;
   return x - Math.floor(x);
@@ -179,6 +281,9 @@ function buildGeneratedLessons(startId: number, count: number): LessonCard[] {
       const students = 1200 + Math.floor(pseudoRandom(seed + 2) * 9800);
       const rating = Math.round((4.3 + pseudoRandom(seed + 3) * 0.7) * 10) / 10;
 
+      const thumbnail =
+        TOPIC_IMAGE_MAP[title] ?? THUMBNAILS[topicIndex % THUMBNAILS.length];
+
       lessons.push({
         id: String(id),
         title,
@@ -188,7 +293,7 @@ function buildGeneratedLessons(startId: number, count: number): LessonCard[] {
         students,
         rating,
         tier: "plus",
-        thumbnail: THUMBNAILS[topicIndex % THUMBNAILS.length],
+        thumbnail,
         description: `An engaging deep dive into ${title.toLowerCase()} — primary sources, key figures, and lasting impact on the world we live in today.`,
       });
       id++;

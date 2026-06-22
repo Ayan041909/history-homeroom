@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useScroll, useSpring } from "framer-motion";
+import { motion, useReducedMotion, useScroll, useSpring } from "framer-motion";
 import { useTouchDevice } from "@/hooks/useTouchDevice";
 
 /**
@@ -9,6 +9,7 @@ import { useTouchDevice } from "@/hooks/useTouchDevice";
  */
 export function ScrollProgress() {
   const isTouch = useTouchDevice();
+  const shouldReduce = useReducedMotion();
   const { scrollYProgress } = useScroll();
   const scaleX = useSpring(scrollYProgress, {
     stiffness: 120,
@@ -16,7 +17,7 @@ export function ScrollProgress() {
     restDelta: 0.001,
   });
 
-  if (isTouch) return null;
+  if (isTouch || shouldReduce) return null;
 
   return (
     <motion.div

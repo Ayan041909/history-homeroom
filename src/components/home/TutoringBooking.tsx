@@ -246,86 +246,140 @@ export function TutoringBooking() {
         )}
       </AnimatePresence>
 
-      {/* Option Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
-        {TUTORING_OPTIONS.map((opt, i) => (
-          <motion.button
-            key={opt.type}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4, delay: i * 0.08 }}
-            onClick={() => setActiveType(activeType === opt.type ? null : opt.type)}
-            className={`p-5 rounded-2xl border-2 text-left transition-all duration-300 group focus-visible:ring-2 focus-visible:ring-gold ${
-              activeType === opt.type
-                ? "border-gold bg-gold/8 shadow-lg shadow-gold/10"
-                : "border-border hover:border-gold/40 bg-card"
-            }`}
-            aria-expanded={activeType === opt.type}
-            aria-controls={`sessions-${opt.type}`}
-            aria-label={`${opt.label}: ${opt.description}`}
-          >
-            <div className="flex items-start justify-between mb-3">
-              <div className={`w-11 h-11 rounded-xl bg-gradient-to-br ${opt.color} flex items-center justify-center shadow-md`}>
-                {opt.icon}
+      {/* Option Cards — mobile: each card expands its own sessions inline */}
+      {/*                 desktop (sm+): 3-col grid, shared panel below */}
+      <div className="flex flex-col sm:grid sm:grid-cols-3 gap-4 mb-6">
+        {TUTORING_OPTIONS.map((opt, i) => {
+          const isActive = activeType === opt.type;
+          const optSessions = sessions.filter((s) => s.type === opt.type);
+          return (
+            <div key={opt.type} className="flex flex-col">
+              <motion.button
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4, delay: i * 0.08 }}
+                onClick={() => setActiveType(isActive ? null : opt.type)}
+                className={`p-5 rounded-2xl border-2 text-left transition-all duration-300 group focus-visible:ring-2 focus-visible:ring-gold ${
+                  isActive
+                    ? "border-gold bg-gold/8 shadow-lg shadow-gold/10"
+                    : "border-border hover:border-gold/40 bg-card"
+                }`}
+                aria-expanded={isActive}
+                aria-controls={`sessions-mobile-${opt.type}`}
+                aria-label={`${opt.label}: ${opt.description}`}
+              >
+                <div className="flex items-start justify-between mb-3">
+                  <div className={`w-11 h-11 rounded-xl bg-gradient-to-br ${opt.color} flex items-center justify-center shadow-md`}>
+                    {opt.icon}
+                  </div>
+                  <ChevronDown
+                    size={16}
+                    className={`text-muted-foreground transition-transform duration-300 ${isActive ? "rotate-180 text-gold" : ""}`}
+                    aria-hidden="true"
+                  />
+                </div>
+                <h3 className="font-bold text-sm mb-1">{opt.label}</h3>
+                <p className="text-xs text-muted-foreground leading-relaxed">{opt.description}</p>
+              </motion.button>
+
+              {/* Mobile-only inline sessions panel, appears right below the tapped card */}
+              <div className="sm:hidden">
+                <AnimatePresence>
+                  {isActive && (
+                    <motion.div
+                      id={`sessions-mobile-${opt.type}`}
+                      key={opt.type}
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: "auto" }}
+                      exit={{ opacity: 0, height: 0 }}
+                      transition={{ duration: 0.3, ease: "easeInOut" }}
+                      className="overflow-hidden"
+                    >
+                      <div className="mt-2 p-4 rounded-2xl border border-gold/20 bg-gold/3">
+                        <div className="flex items-center justify-between mb-3">
+                          <div>
+                            <p className="font-bold text-sm">{opt.label} — Sessions</p>
+                            <p className="text-xs text-muted-foreground">{optSessions.length} sessions this week</p>
+                          </div>
+                          <button
+                            onClick={() => setActiveType(null)}
+                            className="w-7 h-7 rounded-lg hover:bg-muted flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors"
+                            aria-label="Close sessions"
+                          >
+                            <X size={15} />
+                          </button>
+                        </div>
+                        <div className="flex flex-col gap-3" role="list" aria-label={`${opt.label} sessions`}>
+                          {optSessions.map((session) => (
+                            <div key={session.id} role="listitem">
+                              <SessionCard
+                                session={session}
+                                onBook={handleBook}
+                                onCancel={handleCancel}
+                                currentUserId={currentUserId}
+                                userHasExistingBooking={userHasExistingBooking}
+                              />
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </div>
-              <ChevronDown
-                size={16}
-                className={`text-muted-foreground transition-transform duration-300 ${activeType === opt.type ? "rotate-180 text-gold" : ""}`}
-                aria-hidden="true"
-              />
             </div>
-            <h3 className="font-bold text-sm mb-1">{opt.label}</h3>
-            <p className="text-xs text-muted-foreground leading-relaxed">{opt.description}</p>
-          </motion.button>
-        ))}
+          );
+        })}
       </div>
 
-      {/* Sessions Panel */}
-      <AnimatePresence>
-        {activeType && (
-          <motion.div
-            key={activeType}
-            id={`sessions-${activeType}`}
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.35, ease: "easeInOut" }}
-            className="overflow-hidden"
-          >
-            <div className="p-5 rounded-2xl border border-gold/20 bg-gold/3">
-              <div className="flex items-center justify-between mb-4">
-                <div>
-                  <h3 className="font-heading font-bold text-lg">
-                    {TUTORING_OPTIONS.find((o) => o.type === activeType)?.label} — Available Sessions
-                  </h3>
-                  <p className="text-xs text-muted-foreground">5 sessions available this week</p>
-                </div>
-                <button
-                  onClick={() => setActiveType(null)}
-                  className="w-7 h-7 rounded-lg hover:bg-muted flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors"
-                  aria-label="Close sessions panel"
-                >
-                  <X size={15} />
-                </button>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-3" role="list" aria-label={`${activeType} sessions`}>
-                {filteredSessions.map((session) => (
-                  <div key={session.id} role="listitem">
-                    <SessionCard
-                      session={session}
-                      onBook={handleBook}
-                      onCancel={handleCancel}
-                      currentUserId={currentUserId}
-                      userHasExistingBooking={userHasExistingBooking}
-                    />
+      {/* Desktop-only shared sessions panel below all three cards */}
+      <div className="hidden sm:block">
+        <AnimatePresence>
+          {activeType && (
+            <motion.div
+              key={activeType}
+              id={`sessions-${activeType}`}
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: "auto" }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.35, ease: "easeInOut" }}
+              className="overflow-hidden mb-6"
+            >
+              <div className="p-5 rounded-2xl border border-gold/20 bg-gold/3">
+                <div className="flex items-center justify-between mb-4">
+                  <div>
+                    <h3 className="font-heading font-bold text-lg">
+                      {TUTORING_OPTIONS.find((o) => o.type === activeType)?.label} — Available Sessions
+                    </h3>
+                    <p className="text-xs text-muted-foreground">{filteredSessions.length} sessions available this week</p>
                   </div>
-                ))}
+                  <button
+                    onClick={() => setActiveType(null)}
+                    className="w-7 h-7 rounded-lg hover:bg-muted flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors"
+                    aria-label="Close sessions panel"
+                  >
+                    <X size={15} />
+                  </button>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-3" role="list" aria-label={`${activeType} sessions`}>
+                  {filteredSessions.map((session) => (
+                    <div key={session.id} role="listitem">
+                      <SessionCard
+                        session={session}
+                        onBook={handleBook}
+                        onCancel={handleCancel}
+                        currentUserId={currentUserId}
+                        userHasExistingBooking={userHasExistingBooking}
+                      />
+                    </div>
+                  ))}
+                </div>
               </div>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
     </section>
   );
 }

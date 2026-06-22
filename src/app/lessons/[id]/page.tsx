@@ -1,6 +1,6 @@
 "use client";
 
-import { use, useEffect, useRef, useState } from "react";
+import { use, useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { ExternalImage } from "@/components/shared/ExternalImage";
 import { motion, AnimatePresence } from "framer-motion";
@@ -14,7 +14,12 @@ import { useLessonProgress } from "@/hooks/useLessonProgress";
 import { LESSON_CATALOG } from "@/lib/lessonCatalog";
 import { canAccessLesson } from "@/lib/subscriptionAccess";
 import { getLessonContent } from "@/lib/lessonContent";
-import type { LessonContent } from "@/lib/lessonContent";
+import type { LessonContent, QuizQuestion } from "@/lib/lessonContent";
+import { shuffleQuiz } from "@/lib/quizShuffle";
+import { getProgress, updateProgress, getEarnedBadges, awardBadge } from "@/lib/firestore";
+import { checkEarnedBadges, BADGE_DEFINITIONS } from "@/lib/badges";
+import { isSupabaseConfigured } from "@/lib/supabase/env";
+import { useToast } from "@/components/shared/Toast";
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
@@ -51,7 +56,8 @@ function ProgressBar({ value, className = "" }: { value: number; className?: str
 
 export default function LessonPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
-  const { profile } = useAuth();
+  const { user, profile } = useAuth();
+  const userId: string | null = user?.id ?? profile?.uid ?? null;
   const subscription = profile?.subscription ?? "free";
 
   // Find lesson
@@ -61,14 +67,22 @@ export default function LessonPage({ params }: { params: Promise<{ id: string }>
 
   // Progress
   const prog = useLessonProgress(id);
+  const toast = useToast();
 
   // Local UI state
   const [activeSection, setActiveSection] = useState<Section>("Lesson");
   const [quizAnswers, setQuizAnswers] = useState<Record<number, number>>({});
   const [quizSubmitted, setQuizSubmitted] = useState(false);
+  const [displayQuiz, setDisplayQuiz] = useState<QuizQuestion[]>([]);
   const [assignmentText, setAssignmentText] = useState("");
   const [assignmentSubmitted, setAssignmentSubmitted] = useState(false);
   const contentRef = useRef<HTMLDivElement>(null);
+
+  // Initialize quiz order (canonical order on first load)
+  useEffect(() => {
+    if (!content) return;
+    setDisplayQuiz(content.quiz);
+  }, [content]);
 
   // Restore state from saved progress
   useEffect(() => {
@@ -97,6 +111,44 @@ export default function LessonPage({ params }: { params: Promise<{ id: string }>
     contentRef.current?.scrollTo({ top: 0, behavior: "smooth" });
   }, [activeSection]);
 
+  /**
+   * Records a lesson milestone (lesson read / assignment submitted / quiz passed) in the
+   * user's global progress stats and checks whether any new badges were earned.
+   * Only runs when Supabase is configured; silently no-ops in demo/mock mode.
+   * Called ONLY from explicit user actions — never on login or page load.
+   */
+  const recordMilestone = useCallback(
+    async (type: "lesson" | "assignment" | "quiz") => {
+      if (!userId || !isSupabaseConfigured()) return;
+      try {
+        const current = await getProgress(userId);
+        const base = current ?? {
+          lessonsAttended: 0,
+          assignmentsCompleted: 0,
+          quizzesPassed: 0,
+          studyTimeMinutes: 0,
+        };
+        const updated = { ...base };
+        if (type === "lesson") updated.lessonsAttended += 1;
+        if (type === "assignment") updated.assignmentsCompleted += 1;
+        if (type === "quiz") updated.quizzesPassed += 1;
+        await updateProgress(userId, updated);
+        const currentBadges = await getEarnedBadges(userId);
+        const newBadges = checkEarnedBadges(updated, currentBadges);
+        for (const bid of newBadges) await awardBadge(userId, bid);
+        if (newBadges.length > 0) {
+          const names = BADGE_DEFINITIONS.filter((b) => newBadges.includes(b.id))
+            .map((b) => `${b.icon} ${b.name}`)
+            .join(", ");
+          toast.success("Badge earned!", names);
+        }
+      } catch {
+        // Silently ignore if DB is unavailable.
+      }
+    },
+    [userId, toast],
+  );
+
   const switchSection = (s: Section) => {
     setActiveSection(s);
     const sKey = s.toLowerCase() as "lesson" | "quiz" | "assignment";
@@ -104,6 +156,8 @@ export default function LessonPage({ params }: { params: Promise<{ id: string }>
   };
 
   const handleMarkRead = () => {
+    // Record milestone only the first time the student marks the lesson as read.
+    if (!prog.lessonRead) void recordMilestone("lesson");
     prog.update({ lessonRead: true, activeSection: "assignment" });
     switchSection("Assignment");
   };
@@ -116,25 +170,39 @@ export default function LessonPage({ params }: { params: Promise<{ id: string }>
   };
 
   const handleSubmitQuiz = () => {
-    if (!content) return;
-    const score = content.quiz.reduce(
+    if (!displayQuiz.length) return;
+    const score = displayQuiz.reduce(
       (acc, q, i) => acc + (quizAnswers[i] === q.correctIndex ? 1 : 0),
       0,
     );
+    const passed = score / displayQuiz.length >= 0.6;
+    // Record milestone only once per lesson — guarded by prog.quizPassed so retakes
+    // don't double-count the stat even after the component resets quizSubmitted.
+    if (!prog.quizPassed && passed) {
+      void recordMilestone("quiz");
+      prog.update({ quizSubmitted: true, quizScore: score, quizPassed: true, activeSection: "quiz" });
+    } else {
+      prog.update({ quizSubmitted: true, quizScore: score, activeSection: "quiz" });
+    }
     setQuizSubmitted(true);
-    prog.update({ quizSubmitted: true, quizScore: score, activeSection: "quiz" });
   };
 
   const handleSubmitAssignment = () => {
     if (!assignmentText.trim()) return;
+    // Record milestone only the first time the student submits an assignment.
+    if (!prog.assignmentSubmitted) void recordMilestone("assignment");
     setAssignmentSubmitted(true);
     prog.update({ assignmentSubmitted: true, assignmentText, activeSection: "quiz" });
     setTimeout(() => switchSection("Quiz"), 800);
   };
 
   const handleRetakeQuiz = () => {
+    if (!content) return;
+    setDisplayQuiz(shuffleQuiz(content.quiz));
     setQuizAnswers({});
     setQuizSubmitted(false);
+    // Reset the visual quiz state but preserve quizPassed so the milestone
+    // is never double-counted if the student retakes and passes again.
     prog.update({ quizAnswers: {}, quizSubmitted: false, quizScore: null });
   };
 
@@ -193,15 +261,15 @@ export default function LessonPage({ params }: { params: Promise<{ id: string }>
   }
 
   // ─── Progress helpers ────────────────────────────────────────────────────
-  const quizScore = quizSubmitted
-    ? content.quiz.reduce((acc, q, i) => acc + (quizAnswers[i] === q.correctIndex ? 1 : 0), 0)
+  const quizScore = quizSubmitted && displayQuiz.length
+    ? displayQuiz.reduce((acc, q, i) => acc + (quizAnswers[i] === q.correctIndex ? 1 : 0), 0)
     : null;
   const answeredCount = Object.keys(quizAnswers).length;
-  const allAnswered = answeredCount === content.quiz.length;
+  const allAnswered = displayQuiz.length > 0 && answeredCount === displayQuiz.length;
 
   const sectionProgress = {
     Lesson: prog.lessonRead ? 100 : Math.min(90, prog.progress * 2),
-    Quiz: quizSubmitted ? 100 : Math.round((answeredCount / content.quiz.length) * 100),
+    Quiz: quizSubmitted ? 100 : displayQuiz.length ? Math.round((answeredCount / displayQuiz.length) * 100) : 0,
     Assignment: assignmentSubmitted ? 100 : Math.min(90, Math.round((assignmentText.length / 300) * 100)),
   };
 
@@ -396,7 +464,7 @@ export default function LessonPage({ params }: { params: Promise<{ id: string }>
                   </div>
                   {quizSubmitted && quizScore !== null && (
                     <div className={`text-center px-4 py-2 rounded-2xl ${quizScore >= 4 ? "bg-green-500/15 text-green-500" : quizScore >= 3 ? "bg-amber-500/15 text-amber-500" : "bg-red-500/15 text-red-500"}`}>
-                      <p className="text-2xl font-black">{quizScore}/{content.quiz.length}</p>
+                      <p className="text-2xl font-black">{quizScore}/{displayQuiz.length}</p>
                       <p className="text-xs font-medium">{quizScore >= 4 ? "Excellent!" : quizScore >= 3 ? "Good work!" : "Keep studying"}</p>
                     </div>
                   )}
@@ -419,8 +487,8 @@ export default function LessonPage({ params }: { params: Promise<{ id: string }>
                     <div className="flex-1">
                       <p className="font-semibold text-sm">
                         {quizScore >= 4
-                          ? `Great job! You scored ${quizScore}/${content.quiz.length}.`
-                          : `You scored ${quizScore}/${content.quiz.length}. Review the explanations below.`}
+                          ? `Great job! You scored ${quizScore}/${displayQuiz.length}.`
+                          : `You scored ${quizScore}/${displayQuiz.length}. Review the explanations below.`}
                       </p>
                     </div>
                     {quizSubmitted && (
@@ -436,7 +504,7 @@ export default function LessonPage({ params }: { params: Promise<{ id: string }>
 
                 {/* Questions */}
                 <div className="space-y-6">
-                  {content.quiz.map((q, qIdx) => {
+                  {displayQuiz.map((q, qIdx) => {
                     const chosen = quizAnswers[qIdx];
                     const isCorrect = quizSubmitted && chosen === q.correctIndex;
                     const isWrong = quizSubmitted && chosen !== undefined && chosen !== q.correctIndex;
@@ -522,7 +590,7 @@ export default function LessonPage({ params }: { params: Promise<{ id: string }>
                       className="flex items-center gap-2 px-6 py-3 rounded-full font-semibold text-sm text-white gold-gradient shadow hover:opacity-90 disabled:opacity-40 transition-opacity"
                     >
                       Submit Quiz
-                      <span className="text-xs opacity-80">({answeredCount}/{content.quiz.length})</span>
+                      <span className="text-xs opacity-80">({answeredCount}/{displayQuiz.length})</span>
                     </button>
                   ) : (
                     <span className="flex items-center gap-2 text-sm text-green-500 font-medium">
@@ -546,7 +614,7 @@ export default function LessonPage({ params }: { params: Promise<{ id: string }>
                       You&rsquo;ve completed all three sections of this lesson.
                     </p>
                     <p className="text-sm text-gold font-semibold mb-6">
-                      Quiz score: {quizScore}/{content.quiz.length} — {Math.round((quizScore / content.quiz.length) * 100)}%
+                      Quiz score: {quizScore}/{displayQuiz.length} — {Math.round((quizScore / displayQuiz.length) * 100)}%
                     </p>
 
                     <div className="flex flex-wrap items-center justify-center gap-3">

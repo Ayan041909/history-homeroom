@@ -56,6 +56,7 @@ export function useLessonProgress(lessonId: string) {
     quizAnswers: state?.quizAnswers ?? {},
     quizScore: state?.quizScore ?? null,
     quizSubmitted: state?.quizSubmitted ?? false,
+    quizPassed: state?.quizPassed ?? false,
     assignmentText: state?.assignmentText ?? "",
     assignmentSubmitted: state?.assignmentSubmitted ?? false,
     started: ready && state !== null,
