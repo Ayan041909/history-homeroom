@@ -1,4 +1,4 @@
-import type { HistoricalEvent, HistoricalFigure, Session, FAQItem, HistoricalClass } from "@/types";
+import type { HistoricalEvent, HistoricalFigure, Session, FAQItem } from "@/types";
 import { IMAGES } from "./images";
 
 export const HISTORICAL_EVENTS: HistoricalEvent[] = [
@@ -115,12 +115,6 @@ export const MOCK_SESSIONS: Session[] = [
   { id: "p3", type: "peer", day: "Wednesday", date: "2026-05-06", tutorName: "Lakshay Rastogi", maxSeats: 8, bookedSeats: ["u1"], startTime: "4:00 PM", endTime: "5:30 PM" },
   { id: "p4", type: "peer", day: "Thursday", date: "2026-05-07", tutorName: "Ayan Gupta", maxSeats: 8, bookedSeats: ["u1", "u2", "u3", "u4", "u5", "u6"], startTime: "5:00 PM", endTime: "6:30 PM" },
   { id: "p5", type: "peer", day: "Friday", date: "2026-05-08", tutorName: "Ashton Andrade", maxSeats: 8, bookedSeats: ["u1", "u2"], startTime: "5:00 PM", endTime: "6:30 PM" },
-];
-
-export const MOCK_CLASSES: HistoricalClass[] = [
-  { id: "c1", tutorId: "tutor1", title: "Ancient Civilizations", description: "Explore the rise and fall of Egypt, Greece, and Rome", schedule: "Mon/Wed 10am", maxStudents: 25, enrolledStudents: ["s1", "s2", "s3", "s4", "s5", "s6", "s7"], subject: "Ancient History" },
-  { id: "c2", tutorId: "tutor1", title: "World War II Deep Dive", description: "A comprehensive study of WWII causes, events, and consequences", schedule: "Tue/Thu 2pm", maxStudents: 20, enrolledStudents: ["s1", "s2", "s3"], subject: "Modern History" },
-  { id: "c3", tutorId: "tutor1", title: "Renaissance Art & Culture", description: "Art, literature, and ideas that defined the Renaissance era", schedule: "Friday 1pm", maxStudents: 15, enrolledStudents: ["s1", "s4", "s5", "s8", "s9"], subject: "Cultural History" },
 ];
 
 export const FAQ_ITEMS: FAQItem[] = [

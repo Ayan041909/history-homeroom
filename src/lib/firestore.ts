@@ -1,7 +1,7 @@
 import type { User } from "@supabase/supabase-js";
 import { createClient } from "@/lib/supabase/client";
 import { isSupabaseConfigured } from "@/lib/supabase/env";
-import type { UserProfile, Progress, Session, HistoricalClass, SubscriptionTier } from "@/types";
+import type { UserProfile, Progress, SubscriptionTier } from "@/types";
 
 type ProfileRow = {
   id: string;
@@ -29,29 +29,6 @@ type BadgesRow = {
   earned: string[];
 };
 
-type SessionRow = {
-  id: string;
-  type: Session["type"];
-  day: string;
-  date: string;
-  tutor_name: string | null;
-  max_seats: number;
-  booked_seats: string[];
-  start_time: string;
-  end_time: string;
-};
-
-type ClassRow = {
-  id: string;
-  tutor_id: string;
-  title: string;
-  description: string;
-  schedule: string;
-  max_students: number;
-  enrolled_students: string[];
-  subject: string;
-};
-
 function mapProfile(row: ProfileRow): UserProfile {
   return {
     uid: row.id,
@@ -73,33 +50,6 @@ function mapProgress(row: ProgressRow): Progress {
     assignmentsCompleted: row.assignments_completed,
     quizzesPassed: row.quizzes_passed,
     studyTimeMinutes: row.study_time_minutes,
-  };
-}
-
-function mapSession(row: SessionRow): Session {
-  return {
-    id: row.id,
-    type: row.type,
-    day: row.day,
-    date: row.date,
-    tutorName: row.tutor_name ?? undefined,
-    maxSeats: row.max_seats,
-    bookedSeats: row.booked_seats ?? [],
-    startTime: row.start_time,
-    endTime: row.end_time,
-  };
-}
-
-function mapClass(row: ClassRow): HistoricalClass {
-  return {
-    id: row.id,
-    tutorId: row.tutor_id,
-    title: row.title,
-    description: row.description,
-    schedule: row.schedule,
-    maxStudents: row.max_students,
-    enrolledStudents: row.enrolled_students ?? [],
-    subject: row.subject,
   };
 }
 
@@ -126,9 +76,6 @@ export function profileFromAuthUser(authUser: User): UserProfile {
     createdAt: authUser.created_at ?? new Date().toISOString(),
   };
 }
-
-/** @deprecated Use profileFromAuthUser */
-export const profileFromFirebaseUser = profileFromAuthUser;
 
 export async function createUserProfile(uid: string, data: Omit<UserProfile, "uid">) {
   if (!isSupabaseConfigured()) return;
@@ -188,9 +135,6 @@ export async function ensureUserProfileFromAuthUser(authUser: User): Promise<voi
     // Database unavailable — app uses auth + local subscription cache.
   }
 }
-
-/** @deprecated Use ensureUserProfileFromAuthUser */
-export const ensureUserProfileFromFirebaseUser = ensureUserProfileFromAuthUser;
 
 export interface SubscriptionUpdate {
   subscription: SubscriptionTier;
@@ -293,72 +237,5 @@ export async function awardBadge(uid: string, badgeId: string) {
     await supabase.from("badges").upsert({ user_id: uid, earned: [...earned, badgeId] });
   } catch {
     // Ignore when database is unavailable.
-  }
-}
-
-export async function getSessions(type?: string): Promise<Session[]> {
-  if (!isSupabaseConfigured()) return [];
-  try {
-    const supabase = createClient();
-    let query = supabase.from("sessions").select("*");
-    if (type) query = query.eq("type", type);
-    const { data, error } = await query;
-    if (error || !data) return [];
-    return (data as SessionRow[]).map(mapSession);
-  } catch {
-    return [];
-  }
-}
-
-export async function bookSession(sessionId: string, uid: string) {
-  if (!isSupabaseConfigured()) return;
-  try {
-    const supabase = createClient();
-    const { data, error } = await supabase.from("sessions").select("*").eq("id", sessionId).maybeSingle();
-    if (error || !data) throw new Error("Session not found");
-
-    const row = data as SessionRow;
-    const booked = row.booked_seats ?? [];
-    if (booked.includes(uid)) throw new Error("You are already booked for this session");
-    if (booked.length >= (row.max_seats || 0)) throw new Error("This session is at full capacity");
-
-    const { error: updateError } = await supabase
-      .from("sessions")
-      .update({ booked_seats: [...booked, uid] })
-      .eq("id", sessionId);
-    if (updateError) throw new Error("Could not book session");
-  } catch (error) {
-    if (error instanceof Error) throw error;
-    throw new Error("Could not book session");
-  }
-}
-
-export async function createClass(data: Omit<HistoricalClass, "id">) {
-  if (!isSupabaseConfigured()) return;
-  try {
-    const supabase = createClient();
-    await supabase.from("classes").insert({
-      tutor_id: data.tutorId,
-      title: data.title,
-      description: data.description,
-      schedule: data.schedule,
-      max_students: data.maxStudents,
-      enrolled_students: data.enrolledStudents,
-      subject: data.subject,
-    });
-  } catch {
-    // Ignore when database is unavailable.
-  }
-}
-
-export async function getClassesByTutor(tutorId: string): Promise<HistoricalClass[]> {
-  if (!isSupabaseConfigured()) return [];
-  try {
-    const supabase = createClient();
-    const { data, error } = await supabase.from("classes").select("*").eq("tutor_id", tutorId);
-    if (error || !data) return [];
-    return (data as ClassRow[]).map(mapClass);
-  } catch {
-    return [];
   }
 }
