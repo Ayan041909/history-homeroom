@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Camera, Share2, Video, Mail } from "lucide-react";
+import { Camera, Mail } from "lucide-react";
 import { motion } from "framer-motion";
 import { SiteLogo } from "./SiteLogo";
 
@@ -28,10 +28,18 @@ const FOOTER_LINKS = {
 };
 
 const SOCIAL_LINKS = [
-  { icon: Camera, href: "#", label: "Instagram" },
-  { icon: Share2, href: "#", label: "Twitter / X" },
-  { icon: Video, href: "#", label: "YouTube" },
-  { icon: Mail, href: "#", label: "Email" },
+  {
+    icon: Camera,
+    href: "https://instagram.com/historyhomeroom",
+    label: "Instagram @historyhomeroom",
+    external: true,
+  },
+  {
+    icon: Mail,
+    href: "mailto:support@historyhomeroom.org",
+    label: "Email support@historyhomeroom.org",
+    external: false,
+  },
 ];
 
 export function Footer() {
@@ -53,11 +61,14 @@ export function Footer() {
               An elite educational platform bringing history to life through expert tutoring, immersive content, and a passionate community of learners.
             </p>
             <div className="flex items-center gap-3">
-              {SOCIAL_LINKS.map(({ icon: Icon, href, label }) => (
+              {SOCIAL_LINKS.map(({ icon: Icon, href, label, external }) => (
                 <motion.a
                   key={label}
                   href={href}
                   aria-label={label}
+                  {...(external
+                    ? { target: "_blank", rel: "noopener noreferrer" }
+                    : {})}
                   whileHover={{ scale: 1.1, y: -2 }}
                   whileTap={{ scale: 0.95 }}
                   className="w-9 h-9 rounded-xl glass hover:border-gold/40 flex items-center justify-center text-muted-foreground hover:text-gold transition-colors"
