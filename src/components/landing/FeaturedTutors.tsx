@@ -3,7 +3,7 @@
 import { ExternalImage } from "@/components/shared/ExternalImage";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { Star, GraduationCap, Users, ArrowRight } from "lucide-react";
+import { Star, GraduationCap, ArrowRight } from "lucide-react";
 import { FEATURED_TUTORS } from "@/lib/mockData";
 import { getTutorImagePosition } from "@/lib/images";
 import { useTouchDevice } from "@/hooks/useTouchDevice";
@@ -78,12 +78,9 @@ export function FeaturedTutors() {
               {/* Body */}
               <div className="p-4">
                 <p className="text-xs text-muted-foreground leading-relaxed mb-4 min-h-[3rem]">{tutor.bio}</p>
-                <div className="flex items-center justify-between text-xs text-muted-foreground mb-4">
+                <div className="flex items-center text-xs text-muted-foreground mb-4">
                   <span className="flex items-center gap-1">
                     <Star size={12} className="text-gold fill-gold" aria-hidden="true" /> {tutor.rating}
-                  </span>
-                  <span className="flex items-center gap-1">
-                    <Users size={12} aria-hidden="true" /> {tutor.students.toLocaleString()} students
                   </span>
                 </div>
                 <Link
